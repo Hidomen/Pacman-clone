@@ -10,8 +10,8 @@ static float speed = grid_size;
 
 
 
-static int width = grid_size * (board_cell_width + 3);
-static int height = grid_size * (board_cell_height + 3);
+static int width = grid_size * (board_cell_width + 4);
+static int height = grid_size * (board_cell_height + 4);
 
 
 enum Direction {Down, Up, Right, Left};
@@ -19,9 +19,8 @@ enum Direction {Down, Up, Right, Left};
 class gameObject{
 protected:
 	Map& map;
-	borderList& border;
 public:
-	gameObject(Map& map, borderList& border);
+	gameObject(Map& map);
 	
 	sf::Vector2f position;
 	Direction object_direction;

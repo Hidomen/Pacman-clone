@@ -14,18 +14,19 @@ public:
 	sf::RenderWindow& window;
 	sf::RectangleShape arena;
 
-
-	Game(sf::RenderWindow& window, int mapID);
 	borderList border;
-	
+
 
 	Map map;
-	Player player;
-	
 
+	Player player;
 
 	Ghost ghost1;
 	Ghost ghost2;
+
+
+	Game(sf::RenderWindow& window, int mapID);
+	
 
 	sf::VertexArray grid_lines;
 

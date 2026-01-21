@@ -4,7 +4,7 @@
 constexpr sf::Color bgColor = { 123,50,230 };
 
 
-Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID), player(map,border), ghost1(map,border), ghost2(map,border) {
+Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, border), player(map), ghost1(map), ghost2(map) {
 
 
     grid_lines = drawGrid(window, grid_size);
@@ -17,10 +17,13 @@ Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID), pl
     arena.setFillColor(sf::Color::Black);
 
 
-    border.border_up    = arena.getGlobalBounds().getCenter().y - arena.getSize().y / 2.f;
-    border.border_down  = arena.getGlobalBounds().getCenter().y + arena.getSize().y / 2.f;
-    border.border_right = arena.getGlobalBounds().getCenter().x + arena.getSize().x / 2.f;
-    border.border_left  = arena.getGlobalBounds().getCenter().x - arena.getSize().x / 2.f;
+    border.up_pos    = arena.getGlobalBounds().getCenter().y - arena.getSize().y / 2.f;
+    border.down_pos  = arena.getGlobalBounds().getCenter().y + arena.getSize().y / 2.f;
+    border.right_pos = arena.getGlobalBounds().getCenter().x + arena.getSize().x / 2.f;
+    border.left_pos  = arena.getGlobalBounds().getCenter().x - arena.getSize().x / 2.f;
+
+    map.printMap();
+
 }
 
 
@@ -82,6 +85,11 @@ void Game::render() {
 
     update();
 
+    for (auto& tile : map.tiles) {
+        window.draw(tile);
+    }
+
     window.display();
 
+    
 }

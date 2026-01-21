@@ -13,25 +13,33 @@ enum CellType {Empty, Wall, Food, Portal, Door, Enrg, Out};
 
 struct borderList {
 
-	int border_up; //
-	int border_down;
-	int border_right;
-	int border_left; //
+	int up_pos; //
+	int down_pos;
+	int right_pos;
+	int left_pos; //
 
 };
 
 
-//typedef enum string[64][64] MapLib;
 
 class Map{
 public:
 	int mapID;
-	Map(int ID); //loads given ID map 
+	borderList& border;
+	
+	std::vector<sf::RectangleShape> tiles;
+	
+
+	Map(int ID, borderList& border); //loads given ID map 
 
 	void printID();
+
 	CellType charToCell(char c);
-	char checkCell(sf::Vector2f position);
-	sf::Vector2i posToTile(sf::Vector2f position);
+	char checkCell(sf::Vector2i position);
+	sf::Vector2i posToTile(sf::Vector2i position); //referenced by borders
+
+	void printMap();
+
 private:
 	
 };

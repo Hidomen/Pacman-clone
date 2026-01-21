@@ -8,7 +8,7 @@
 class Player : public gameObject {
 public:
 
-	Player(Map& map, borderList& border);
+	Player(Map& map);
 
 	int FoodCount;
 
