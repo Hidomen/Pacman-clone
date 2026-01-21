@@ -13,10 +13,10 @@ enum CellType {Empty, Wall, Food, Portal, Door, Enrg, Out};
 
 struct borderList {
 
-	int up_pos; //
-	int down_pos;
-	int right_pos;
-	int left_pos; //
+	float up_pos; //
+	float down_pos;
+	float right_pos;
+	float left_pos; //
 
 };
 
@@ -35,8 +35,8 @@ public:
 	void printID();
 
 	CellType charToCell(char c);
-	char checkCell(sf::Vector2i position);
-	sf::Vector2i posToTile(sf::Vector2i position); //referenced by borders
+	char checkCell(sf::Vector2f position);
+	sf::Vector2f posToTile(sf::Vector2f position); //referenced by borders
 
 	void printMap();
 

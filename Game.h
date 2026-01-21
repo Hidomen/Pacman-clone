@@ -14,6 +14,9 @@ public:
 	sf::RenderWindow& window;
 	sf::RectangleShape arena;
 
+	sf::Clock clock;
+	float delayTime;
+
 	borderList border;
 
 
@@ -31,7 +34,7 @@ public:
 	sf::VertexArray grid_lines;
 
 
-	void inputSystem();
+	void inputSystem(float currentTime);
 
 	void update();
 	void render();

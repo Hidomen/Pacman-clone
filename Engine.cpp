@@ -8,11 +8,10 @@ Engine::Engine()
             static_cast<unsigned>(width),
             static_cast<unsigned>(height)
         } },
-        "MY TITLE",
+        "Pacman by Hidomen",
         sf::Style::Default
-    ), game(window,5) //bunu nas?l yapt?m unttum mk
+    ),mapID(1), game(window,mapID) //bunu nas?l yapt?m unttum mk
 {
-    
     //mapID = 1;
     
 

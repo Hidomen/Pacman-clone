@@ -83,14 +83,17 @@ void Map::printID() {
 }
 
 
-//icabına bak
-sf::Vector2i Map::posToTile(sf::Vector2i position) {
+//transforms position into map's coordinates with respects of arena
+sf::Vector2f Map::posToTile(sf::Vector2f position) { 
 
-	return { (int)((position.x - border.left_pos) / grid_size), (int)((position.y - border.up_pos ) / grid_size) };
+	return { ((position.x - border.left_pos) / grid_size), ((position.y - border.up_pos ) / grid_size) };
 }
 
-char Map::checkCell(sf::Vector2i position) {
-	sf::Vector2i tilePos = posToTile(position);
+//controls cell by position with respects of arena
+char Map::checkCell(sf::Vector2f position) {
+	sf::Vector2f tilePos = posToTile(position);
+
+	std::cout << map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)] << " ";
 
 	if (tilePos.x > board_cell_width || tilePos.x < 0) {
 		std::cout << "X DIŞINDA" << std::endl;
@@ -102,9 +105,8 @@ char Map::checkCell(sf::Vector2i position) {
 	}
 
 
-	return map2[tilePos.y][tilePos.x];
+	return map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)];
 }
-//
 
 void Map::printMap() {
 
@@ -115,7 +117,6 @@ void Map::printMap() {
 			tile.setSize({ grid_size,grid_size });
 
 			if (map2[y][x] == '.') {
-				std::cout << checkCell({ x,y });
 				tile.setFillColor(sf::Color::Transparent);
 
 			}

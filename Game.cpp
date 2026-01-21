@@ -24,51 +24,40 @@ Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, bor
 
     map.printMap();
 
+    delayTime = .10f;
+
 }
 
 
-void Game::inputSystem() {
+void Game::inputSystem(float currentTime) {
+    if (delayTime > currentTime) return;
+
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
         player.move(Down);
+        clock.restart();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
         player.move(Up);
+        clock.restart();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
         player.move(Left);
+        clock.restart();
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
         player.move(Right);
+        clock.restart();
     }
 }
 
-void portals(Player& player, float width, float height, float grid_size) {
-
-    float posX = player.shape.getPosition().x;
-    float posY = player.shape.getPosition().y;
-
-    float buffer = 50.f;
-
-    if (posX < -buffer) {
-        player.shape.setPosition({ width + grid_size / 2.f,posY });
-    }
-    else if (posX > width + buffer) {
-        player.shape.setPosition({ 0 - grid_size / 2.f,posY });
-    }
-    else if (posY < -buffer) {
-        player.shape.setPosition({ posX, height + grid_size / 2.f });
-    }
-    else if (posY > height + buffer) {
-        player.shape.setPosition({ posX, 0 - grid_size / 2.f });
-    }
-}
 
 void Game::update() {
-	portals(player, width, height, grid_size);
-
-	//INPUTS
-	inputSystem();
+    float time = clock.getElapsedTime().asSeconds();
+    //std::cout << "CLOCK: " << time << std::endl;
+	
+    //INPUTS
+	inputSystem(time);
     //GHOST MOVEMENT
 }
 
@@ -81,13 +70,15 @@ void Game::render() {
     window.draw(ghost1.shape);
     window.draw(ghost2.shape);
 
-    window.draw(grid_lines);
+    
 
     update();
 
     for (auto& tile : map.tiles) {
         window.draw(tile);
     }
+
+    window.draw(grid_lines);
 
     window.display();
 
