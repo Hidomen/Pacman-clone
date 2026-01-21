@@ -4,30 +4,29 @@
 constexpr sf::Color bgColor = { 123,50,230 };
 
 
-Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID), player(map,arena), ghost1(map,arena), ghost2(map,arena) {
+Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID), player(map,border), ghost1(map,border), ghost2(map,border) {
 
 
     grid_lines = drawGrid(window, grid_size);
 
-    arena.setSize({ grid_size * board_cell_width, grid_size * board_cell_height });
+    arena.setSize({ grid_size * (board_cell_width), grid_size * (board_cell_height) });
 
-    arena.setOrigin(arena.getGeometricCenter());
     arena.setPosition({ width / 2.f, height / 2.f });
+    arena.setOrigin(arena.getGeometricCenter());
+
     arena.setFillColor(sf::Color::Black);
 
-    
+
+    border.border_up    = arena.getGlobalBounds().getCenter().y - arena.getSize().y / 2.f;
+    border.border_down  = arena.getGlobalBounds().getCenter().y + arena.getSize().y / 2.f;
+    border.border_right = arena.getGlobalBounds().getCenter().x + arena.getSize().x / 2.f;
+    border.border_left  = arena.getGlobalBounds().getCenter().x - arena.getSize().x / 2.f;
 }
 
 
 void Game::inputSystem() {
 
-
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
-        //if(player.shape.getGlobalBounds().findIntersection(.getGlobalBounds())
-        arena.getGlobalBounds();
-        player.shape.getGlobalBounds();
-
         player.move(Down);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {

@@ -7,7 +7,7 @@
 
 class Ghost : public gameObject{
 public:
-	Ghost(Map& map, sf::RectangleShape& arena);
+	Ghost(Map& map, borderList& border);
 
 	sf::Vector2f targetPosition;
 	bool isEnergised;

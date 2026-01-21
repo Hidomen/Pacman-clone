@@ -8,7 +8,7 @@
 class Player : public gameObject {
 public:
 
-	Player(Map& map, sf::RectangleShape& arena);
+	Player(Map& map, borderList& border);
 
 	int FoodCount;
 

@@ -11,6 +11,16 @@ static const int board_cell_width = 28;
 
 enum CellType {Empty, Wall, Food, Portal, Door, Enrg, Out};
 
+struct borderList {
+
+	int border_up; //
+	int border_down;
+	int border_right;
+	int border_left; //
+
+};
+
+
 //typedef enum string[64][64] MapLib;
 
 class Map{

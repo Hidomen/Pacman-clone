@@ -9,7 +9,6 @@
 
 
 
-
 class Game{
 public:
 	sf::RenderWindow& window;
@@ -17,6 +16,8 @@ public:
 
 
 	Game(sf::RenderWindow& window, int mapID);
+	borderList border;
+	
 
 	Map map;
 	Player player;

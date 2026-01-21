@@ -78,7 +78,7 @@ void Map::printID() {
 
 sf::Vector2i Map::posToTile(sf::Vector2f position) {
 
-	return { (int)position.x / grid_size, (int)position.y / grid_size };
+	return { (int)(position.x - ) / grid_size, (int)position.y / grid_size };
 }
 
 char Map::checkCell(sf::Vector2f position) {
