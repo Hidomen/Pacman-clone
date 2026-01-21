@@ -2,9 +2,9 @@
 
 
 Ghost::Ghost(Map& map) : gameObject(map) {
-	shape.setSize({ 64, 64 });
-	shape.setFillColor(sf::Color::Red);
-	shape.setPosition({50,50});
+	shape.setSize({ tileSize, tileSize });
+	shape.setFillColor(sf::Color::Green);
+	//shape.setPosition({50,50});
 
 	
 }

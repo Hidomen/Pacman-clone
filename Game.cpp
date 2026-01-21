@@ -7,9 +7,9 @@ constexpr sf::Color bgColor = { 123,50,230 };
 Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, border), player(map), ghost1(map), ghost2(map) {
 
 
-    grid_lines = drawGrid(window, grid_size);
+    grid_lines = drawGrid(window, tileSize);
 
-    arena.setSize({ grid_size * (board_cell_width), grid_size * (board_cell_height) });
+    arena.setSize({ tileSize * (board_cell_width), tileSize * (board_cell_height) });
 
     arena.setPosition({ width / 2.f, height / 2.f });
     arena.setOrigin(arena.getGeometricCenter());
@@ -24,31 +24,36 @@ Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, bor
 
     map.printMap();
 
-    delayTime = .10f;
+    delayTime = .20f;
 
 }
 
 
 void Game::inputSystem(float currentTime) {
-    if (delayTime > currentTime) return;
 
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
-        player.move(Down);
-        clock.restart();
+
+        player.changeDirection(Down);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
-        player.move(Up);
-        clock.restart();
+
+        player.changeDirection(Up);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
-        player.move(Left);
-        clock.restart();
+
+        player.changeDirection(Left);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
-        player.move(Right);
-        clock.restart();
+
+        player.changeDirection(Right);
     }
+    
+    if (delayTime > currentTime) return;
+
+    player.move();
+    clock.restart();
+
 }
 
 

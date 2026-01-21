@@ -6,16 +6,57 @@ gameObject::gameObject(Map& map) : object_direction(Down), map(map) {
 	
 }
 
+void gameObject::changeDirection(Direction new_direction) {
+	//if (new_direction == object_direction) return;
 
+	next_direction = new_direction;
+	//update sprite //
 
-void gameObject::move(Direction given_direction) {
+}
+
+void gameObject::checkRotation() {
+
+	switch (next_direction){
+
+	case Down:
+		if (position.y + shape.getSize().y + step > map.border.down_pos) return;
+		if ('|' == map.checkCell({ position.x, position.y + shape.getSize().y + step })) return;
+		
+		break;
+
+	case Up:
+		if (position.y - step < map.border.up_pos) return;
+		if ('|' == map.checkCell({ position.x,position.y - step })) return;
+
+		break;
+
+	case Right:
+		if (position.x + shape.getSize().x + step > map.border.right_pos) return;
+		if ('|' == map.checkCell({ position.x + shape.getSize().x + step , position.y })) return;
+
+		break;
+
+	case Left:
+		if (position.x - step < map.border.left_pos) return;
+		if ('|' == map.checkCell({ position.x - step , position.y })) return;
+
+		break;
+	}
+	
+	object_direction = next_direction;
+
+}
+
+void gameObject::move() {
 
 	//std::cout << "LEFT BORDER: " << map.border.left_pos << " RIGHT BORDER:"	<< map.border.right_pos << std::endl;
 	//std::cout << "UP BORDER: "	 << map.border.up_pos << " DOWN BORDER: "	<< map.border.down_pos << std::endl;
 
-	object_direction = given_direction;
+	std::cout << "NEXT DIR: " << next_direction << "   OBJ. DIR: " << object_direction << std::endl;
 
-	switch (given_direction){
+	checkRotation();
+
+	switch (object_direction){
 
 	case Down:
 		if (position.y + shape.getSize().y + step > map.border.down_pos) return; //position is based by top-left corner of shape
@@ -50,7 +91,7 @@ void gameObject::move(Direction given_direction) {
 	position = shape.getPosition();
 
 
-	std::cout << "MOVED POS: " << position.x << ", " << position.y << std::endl;
+	//std::cout << "MOVED POS: " << position.x << ", " << position.y << std::endl;
 
 	
 

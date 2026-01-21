@@ -4,12 +4,12 @@
 #include "Map.h"
 #include <iostream>
 
-static float step = grid_size;
+static float step = tileSize;
 
 
 //bunların burda ne işi var
-static float width = grid_size * (board_cell_width + 4);
-static float height = grid_size * (board_cell_height + 4);
+static float width = tileSize * (board_cell_width + 4);
+static float height = tileSize * (board_cell_height + 4);
 //
 
 enum Direction {Down, Up, Right, Left};
@@ -22,11 +22,16 @@ public:
 	gameObject(Map& map);
 	
 	sf::Vector2f position;
+
 	Direction object_direction;
+	Direction next_direction;
+
 	sf::RectangleShape shape;
 //private:
 
-	void move(Direction given_direction);
+	void move();
+	void changeDirection(Direction new_direction);
+	void checkRotation();
 
 };
 
