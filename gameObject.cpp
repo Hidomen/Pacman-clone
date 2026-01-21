@@ -50,7 +50,7 @@ void gameObject::move(Direction given_direction) {
 	position = shape.getPosition();
 
 
-	std::cout << "POS: " << position.x << ", " << position.y << std::endl;
+	std::cout << "MOVED POS: " << position.x << ", " << position.y << std::endl;
 
 	
 
