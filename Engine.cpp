@@ -10,7 +10,7 @@ Engine::Engine()
         } },
         "Pacman by Hidomen",
         sf::Style::Default
-    ),mapID(1), mainMenu(window, width), game(window, mapID), pause(pause)
+    ),mapID(1), mainMenu(window, state, width), game(window, mapID), pause(window)
 {
     //mapID = 1;
     state = sMainMenu;

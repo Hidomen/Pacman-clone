@@ -3,20 +3,27 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Button.h"
+
+enum MenuState { sMainMenu, sMainOptions, sInGame, sPause, sInGameOptions };
+
+
 class MainMenu
 {
 public:
 	sf::RenderWindow& window;
-	MainMenu(sf::RenderWindow& window, float width);
+	MenuState& state;
+	MainMenu(sf::RenderWindow& window, MenuState& state, float width);
 
 
 	int button_size;
 
-	sf::Font font;
+	sf::Font font; //
 
-	sf::Text play;
-	sf::Text options;
-	sf::Text exit;
+	Button play;
+	Button options;
+	Button exit;
+	
 
 	//std::vector<sf::Text> buttons;
 	//

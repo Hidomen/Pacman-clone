@@ -6,7 +6,7 @@
 #include "MainMenu.h"
 #include "Pause.h"
 
-enum MenuState {sMainMenu, sMainOptions, sInGame,  sPause, sInGameOptions};
+//enum MenuState {sMainMenu, sMainOptions, sInGame,  sPause, sInGameOptions};
 
 class Engine{
 	
