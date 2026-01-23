@@ -11,6 +11,7 @@ public:
 	Player(Map& map);
 
 	int FoodCount;
+	int score; //high-score?
 
 	void update();
 };

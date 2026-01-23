@@ -10,12 +10,10 @@ Engine::Engine()
         } },
         "Pacman by Hidomen",
         sf::Style::Default
-    ),mapID(1), game(window,mapID) //bunu nas?l yapt?m unttum mk
+    ),mapID(1), mainMenu(window, width), game(window, mapID), pause(pause)
 {
     //mapID = 1;
-    
-
-
+    state = sMainMenu;
     
 }
 
@@ -37,18 +35,41 @@ void Engine::handleEvents() {
                 window.close();
             }
 
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Enter) { //for a brief moment
+                state = static_cast<MenuState>((state + 1) % 5);
+            }
+
             
         }
     }
 
 }
 
-
 void Engine::run() {
     while (isOpen()) {
+
         handleEvents();
-        game.update();
-        game.render();
+
+        switch (state)
+        {
+        case sMainMenu:
+            mainMenu.update();
+            mainMenu.render();
+            break;
+        case sMainOptions:
+            break;
+        case sInGame:
+            game.update();
+            game.render();
+            break;
+        
+        case sPause:
+            break;
+        case sInGameOptions:
+            break;
+        }
+
+        
     }
     
     

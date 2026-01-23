@@ -39,14 +39,7 @@ std::string map2[board_cell_height] = {
 
 Map::Map(int ID, borderList& border) : border(border) {
 	mapID = ID;
-
-	
 }
-
-//CellType map1[board_cell_width][board_cell_height] = { //28,31
-//	{Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall},
-//	{Wall,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Wall,Wall,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Food,Wall},
-//};
 
 // | = Wall, . = Food, Space = Empty, - = Restricted, P = Portal
 CellType Map::charToCell(char c) {
@@ -124,7 +117,7 @@ void Map::printMap() {
 				tile.setFillColor(sf::Color::White);
 			}
 			else {
-				tile.setFillColor(sf::Color::Red);
+				tile.setFillColor(sf::Color::Transparent); //for now
 			}
 			tile.setPosition({ (float)((x * tileSize) + border.left_pos), (float)((y * tileSize) + border.up_pos) });
 			tiles.push_back(tile); // then adjusting tile to arena

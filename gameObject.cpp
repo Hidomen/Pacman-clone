@@ -14,7 +14,7 @@ void gameObject::changeDirection(Direction new_direction) {
 
 }
 
-void gameObject::checkRotation() {
+void gameObject::checkRotation() { // check for copy paste situation
 
 	switch (next_direction){
 
