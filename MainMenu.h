@@ -5,7 +5,6 @@
 
 #include "Button.h"
 
-enum MenuState { sMainMenu, sMainOptions, sInGame, sPause, sInGameOptions };
 
 
 class MainMenu
@@ -19,6 +18,11 @@ public:
 	int button_size;
 
 	sf::Font font; //
+
+	sf::Texture cursor_texture;
+	sf::Sprite menu_cursor;
+	sf::Vector2f cursor_pos;
+	bool cursor_vis;
 
 	Button play;
 	Button options;

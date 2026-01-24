@@ -7,9 +7,9 @@ constexpr sf::Color bgColor = { 123,50,230 };
 Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, border), player(map), ghost1(map), ghost2(map) {
 
 
-    grid_lines = drawGrid(window, tileSize);
+    grid_lines = drawGrid(window, tile_size);
 
-    arena.setSize({ tileSize * (board_cell_width), tileSize * (board_cell_height) });
+    arena.setSize({ tile_size * (board_cell_width), tile_size * (board_cell_height) });
 
     arena.setPosition({ width / 2.f, height / 2.f });
     arena.setOrigin(arena.getGeometricCenter());

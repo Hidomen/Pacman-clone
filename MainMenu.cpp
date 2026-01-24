@@ -2,52 +2,84 @@
 
 MainMenu::MainMenu(sf::RenderWindow& window, MenuState& state ,float width) : window(window), state(state),
 
-font("./Fonts/pacman-1.otf"), button_size(100),
-play("Play", { width / 2 - button_size,100.f }, button_size),
-options("Options", { width / 2 - button_size,300.f }, button_size), 
-exit("Exit", { width / 2 - button_size,500.f }, button_size) {
+cursor_texture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),
+menu_cursor(cursor_texture),
+
+button_size(75),
+play	(window,	"Play",	{ width / 2 - button_size, 200.f }, button_size),
+options	(window, "Options",	{ width / 2 - button_size, 300.f }, button_size), 
+exit	(window,	"Exit",	{ width / 2 - button_size, 400.f }, button_size) {
 
 	std::cout << "Main Menu is opened." << std::endl;
 
-	//buttons.push_back(play);
-	//buttons.push_back(options);
-	//buttons.push_back(exit);
-
-
-	//for (int i = 0; i < 3; i++) {
-		//buttons[i].setFillColor(sf::Color::Blue);
-		//buttons[i].setPosition({ 100.f + i, 0.f });
-
-	//}
+	menu_cursor.setScale({ 3,3 });
+	cursor_vis = false;
 }
 
 void MainMenu::update() {
+	menu_cursor.setColor(sf::Color::Transparent);
 
-	if (play.update(window)) {
-		state = sInGame;
+	play.text.setFillColor(sf::Color::White);
+	options.text.setFillColor(sf::Color::White);
+	exit.text.setFillColor(sf::Color::White);
+
+	if (cursor_vis) {
+		menu_cursor.setColor(sf::Color::Yellow);
+		menu_cursor.setPosition(cursor_pos);
+
+		cursor_vis = false;
 	}
 
-	//if (options.update(window)) {
+	if (play.hover()) {
+		play.text.setFillColor(sf::Color::Yellow); // maybe hover func in button.cpp
 
-	//}
+		cursor_pos = { play.hitbox.getPosition().x - 70.f, play.hitbox.getPosition().y };
+		cursor_vis = true;
 
-	//if (exit.update(window)) {
+		if (play.isClicked()) {
+			state = MenuState::InGame;
+		}
+	}
 
-	//}
-		options.update(window);
-		exit.update(window);
+	if (options.hover()) {
+		options.text.setFillColor(sf::Color::Yellow);
+
+		cursor_pos = { options.hitbox.getPosition().x - 70.f, options.hitbox.getPosition().y };
+		cursor_vis = true;
+
+		if (options.isClicked()) {
+			//state = MenuState::MainOptions;
+		}
+
+	}
+
+	if (exit.hover()) {
+		exit.text.setFillColor(sf::Color::Yellow);
+
+		cursor_pos = { exit.hitbox.getPosition().x - 70.f, exit.hitbox.getPosition().y };
+		cursor_vis = true;
+
+		if (exit.isClicked()) {
+			state = MenuState::Exit;
+
+		}
+	}
 }
 
+
 void MainMenu::render() {
-	window.clear(sf::Color::Yellow);
+	window.clear(sf::Color::Black);
+
+	window.draw(menu_cursor);
+
 
 	window.draw(play.text);
 	window.draw(options.text);
 	window.draw(exit.text);
 
-	window.draw(play.hitbox);
-	window.draw(options.hitbox);
-	window.draw(exit.hitbox);
+	//window.draw(play.hitbox);
+	//window.draw(options.hitbox);
+	//window.draw(exit.hitbox);
 
 	window.display();
 

@@ -52,7 +52,7 @@ void gameObject::move() {
 	//std::cout << "LEFT BORDER: " << map.border.left_pos << " RIGHT BORDER:"	<< map.border.right_pos << std::endl;
 	//std::cout << "UP BORDER: "	 << map.border.up_pos << " DOWN BORDER: "	<< map.border.down_pos << std::endl;
 
-	std::cout << "NEXT DIR: " << next_direction << "   OBJ. DIR: " << object_direction << std::endl;
+	//std::cout << "NEXT DIR: " << next_direction << "   OBJ. DIR: " << object_direction << std::endl;
 
 	checkRotation();
 

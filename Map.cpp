@@ -79,7 +79,7 @@ void Map::printID() {
 //transforms position into map's coordinates with respects of arena
 sf::Vector2f Map::posToTile(sf::Vector2f position) { 
 
-	return { ((position.x - border.left_pos) / tileSize), ((position.y - border.up_pos ) / tileSize) };
+	return { ((position.x - border.left_pos) / tile_size), ((position.y - border.up_pos ) / tile_size) };
 }
 
 //controls cell by position with respects of arena
@@ -107,7 +107,7 @@ void Map::printMap() {
 	for (int y = 0; y < board_cell_height; y++) { // starting from 0 and controlling by map array
 		for (int x = 0; x < board_cell_width; x++) { 
 			sf::RectangleShape tile;
-			tile.setSize({ tileSize,tileSize });
+			tile.setSize({ tile_size,tile_size });
 
 			if (map2[y][x] == '.') {
 				tile.setFillColor(sf::Color::Transparent);
@@ -119,7 +119,7 @@ void Map::printMap() {
 			else {
 				tile.setFillColor(sf::Color::Transparent); //for now
 			}
-			tile.setPosition({ (float)((x * tileSize) + border.left_pos), (float)((y * tileSize) + border.up_pos) });
+			tile.setPosition({ (float)((x * tile_size) + border.left_pos), (float)((y * tile_size) + border.up_pos) });
 			tiles.push_back(tile); // then adjusting tile to arena
 
 		}

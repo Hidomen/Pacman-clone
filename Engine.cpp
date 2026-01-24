@@ -13,7 +13,7 @@ Engine::Engine()
     ),mapID(1), mainMenu(window, state, width), game(window, mapID), pause(window)
 {
     //mapID = 1;
-    state = sMainMenu;
+    state = MenuState::MainMenu;
     
 }
 
@@ -23,7 +23,7 @@ void Engine::handleEvents() {
 
         if (event->is<sf::Event::Closed>()) {
             std::cout << "[ENGINE] - Program is closed. By window." << std::endl;
-            window.close();
+            state = MenuState::Exit;
         }
 
         //key pressed states
@@ -32,11 +32,11 @@ void Engine::handleEvents() {
             //escape->>close
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                 std::cout << "[ENGINE] - Program is closed. By 'ESC' button." << std::endl;
-                window.close();
+                state = MenuState::Exit;
             }
 
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Enter) { //for a brief moment
-                state = static_cast<MenuState>((state + 1) % 5);
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Enter && state == MenuState::InGame) { //for a brief moment
+                state = MenuState::Pause;
             }
 
             
@@ -52,20 +52,29 @@ void Engine::run() {
 
         switch (state)
         {
-        case sMainMenu:
+        case MenuState::MainMenu:
             mainMenu.update();
             mainMenu.render();
             break;
-        case sMainOptions:
+
+        case MenuState::MainOptions:
             break;
-        case sInGame:
+
+        case MenuState::InGame:
             game.update();
             game.render();
             break;
         
-        case sPause:
+        case MenuState::Pause:
+            pause.update();
+            pause.render();
             break;
-        case sInGameOptions:
+
+        case MenuState::InGameOptions:
+            break;
+
+        case MenuState::Exit:
+            window.close();
             break;
         }
 

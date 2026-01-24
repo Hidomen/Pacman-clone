@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-constexpr int tileSize = 24;
+constexpr int tile_size = 24;
 
 
 static const int board_cell_height = 31;
