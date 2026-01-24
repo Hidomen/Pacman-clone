@@ -45,46 +45,56 @@ Map::Map(int ID, borderList& border) : border(border) {
 CellType Map::charToCell(char c) {
 
 	switch (c) {
-
 	case ' ':
 		return Empty;
-
 	case '|':
 		return Wall;
-
 	case '.':
 		return Food;
-
 	case 'P':
 		return Portal;
-
 	case 'X':
 		return Door;
-
 	case 'E':
 		return Enrg;
-
 	case '-':
 		return Out;
 	}
-
 	return Out;
 }
 
-void Map::printID() {
-	std::cout << mapID;
+char Map::cellToChar(CellType c) {
+
+	switch (c){
+	case Empty:
+		return ' ';
+	case Wall:
+		return '|';
+	case Food:
+		return '.';
+	case Portal:
+		return 'P';
+	case Door:
+		return 'X';
+	case Enrg:
+		return 'E';
+	case Out:
+		return '-';
+	}
+	return '-';
 }
 
-
 //transforms position into map's coordinates with respects of arena
-sf::Vector2f Map::posToTile(sf::Vector2f position) { 
+sf::Vector2i Map::posToTile(sf::Vector2f position) { 
 
-	return { ((position.x - border.left_pos) / tile_size), ((position.y - border.up_pos ) / tile_size) };
+	return { static_cast<int>(std::floor((position.x - border.left_pos) / tile_size)), 
+			static_cast<int>(std::floor((position.y - border.up_pos ) / tile_size)) };
 }
 
 //controls cell by position with respects of arena
 char Map::checkCell(sf::Vector2f position) {
-	sf::Vector2f tilePos = posToTile(position);
+	sf::Vector2i tilePos = posToTile(position);
+	std::cout << tilePos.x << " , " << tilePos.y << std::endl;
 
 	//std::cout << map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)] << " ";
 
@@ -98,7 +108,7 @@ char Map::checkCell(sf::Vector2f position) {
 	}
 
 
-	return map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)];
+	return map2[tilePos.y][tilePos.x];
 }
 
 void Map::printMap() {

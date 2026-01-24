@@ -11,5 +11,7 @@ public:
 
 	sf::Vector2f targetPosition;
 	bool isEnergised;
+
+	void update();
 };
 

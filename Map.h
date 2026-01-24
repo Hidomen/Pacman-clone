@@ -32,11 +32,11 @@ public:
 
 	Map(int ID, borderList& border); //loads given ID map 
 
-	void printID();
 
 	CellType charToCell(char c);
+	char cellToChar(CellType c);
 	char checkCell(sf::Vector2f position);
-	sf::Vector2f posToTile(sf::Vector2f position); //referenced by borders
+	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
 
 	void printMap();
 

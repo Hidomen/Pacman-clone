@@ -50,8 +50,8 @@ void Engine::run() {
 
         handleEvents();
 
-        switch (state)
-        {
+        switch (state){
+
         case MenuState::MainMenu:
             mainMenu.update();
             mainMenu.render();
@@ -76,12 +76,8 @@ void Engine::run() {
         case MenuState::Exit:
             window.close();
             break;
-        }
-
-        
+        }   
     }
-    
-    
 }
 
 bool Engine::isOpen() {

@@ -8,3 +8,10 @@ Ghost::Ghost(Map& map) : gameObject(map) {
 
 	
 }
+
+void Ghost::update() {
+	float randTileX = rand() % 28;
+	float randTileY = rand() % 31;
+
+	Ghost::targetPosition = { randTileX, randTileY };
+}

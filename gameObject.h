@@ -12,7 +12,7 @@ static float width = tile_size * (board_cell_width + 4);
 static float height = tile_size * (board_cell_height + 4);
 //
 
-enum Direction {Down, Up, Right, Left};
+enum class Direction {Down, Up, Right, Left};
 
 class gameObject{
 protected:
@@ -26,6 +26,8 @@ public:
 	Direction object_direction;
 	Direction next_direction;
 
+	sf::Texture texture;
+	sf::Sprite sprite;
 	sf::RectangleShape shape;
 //private:
 

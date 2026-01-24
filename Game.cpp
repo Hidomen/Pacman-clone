@@ -6,7 +6,9 @@ constexpr sf::Color bgColor = { 123,50,230 };
 
 Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, border), player(map), ghost1(map), ghost2(map) {
 
+    isInit = false;
 
+    //never changes
     grid_lines = drawGrid(window, tile_size);
 
     arena.setSize({ tile_size * (board_cell_width), tile_size * (board_cell_height) });
@@ -16,53 +18,73 @@ Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, bor
 
     arena.setFillColor(sf::Color::Black);
 
-
     border.up_pos    = arena.getGlobalBounds().getCenter().y - arena.getSize().y / 2.f;
     border.down_pos  = arena.getGlobalBounds().getCenter().y + arena.getSize().y / 2.f;
     border.right_pos = arena.getGlobalBounds().getCenter().x + arena.getSize().x / 2.f;
     border.left_pos  = arena.getGlobalBounds().getCenter().x - arena.getSize().x / 2.f;
 
-    map.printMap();
-
-    delayTime = .20f;
-
+    move_speed = .20f;
 }
 
 
-void Game::inputSystem(float currentTime) {
+void Game::inputSystem() {
 
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
 
-        player.changeDirection(Down);
+        player.changeDirection(Direction::Down);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
 
-        player.changeDirection(Up);
+        player.changeDirection(Direction::Up);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
 
-        player.changeDirection(Left);
+        player.changeDirection(Direction::Left);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
 
-        player.changeDirection(Right);
+        player.changeDirection(Direction::Right);
     }
     
-    if (delayTime > currentTime) return;
+    if (move_speed > delay_time) return;
 
-    player.move();
-    clock.restart();
+    if (timer_time >= 3.f) {
+        player.move();
 
+        delayClock.restart();
+    }
 }
 
+void Game::init() {
+    timerClock.restart();
+
+    player.position = { tile_size * 15, tile_size * 25 }; //start point
+    player.shape.setPosition(sf::Vector2f(player.position));
+
+    player.score = 0;
+    player.FoodCount = 0;
+
+    map.printMap();
+
+    //music
+
+    isInit = true;
+
+    std::cout << "Game Initilized :: Took, " << timerClock.getElapsedTime().asSeconds() << "s ." << std::endl;
+}
 
 void Game::update() {
-    float time = clock.getElapsedTime().asSeconds();
-    //std::cout << "CLOCK: " << time << std::endl;
+    timer_time = timerClock.getElapsedTime().asSeconds();
+    delay_time = delayClock.getElapsedTime().asSeconds();
+
+    //std::cout << "TOTAL TIME: " << timer_time << std::endl;
+
+    if (!isInit) {
+        init();
+    }
 	
-    //INPUTS
-	inputSystem(time);
+	inputSystem();
     //GHOST MOVEMENT
 }
 
@@ -75,10 +97,6 @@ void Game::render() {
     window.draw(ghost1.shape);
     window.draw(ghost2.shape);
 
-    
-
-    update();
-
     for (auto& tile : map.tiles) {
         window.draw(tile);
     }
@@ -86,6 +104,4 @@ void Game::render() {
     window.draw(grid_lines);
 
     window.display();
-
-    
 }
