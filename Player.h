@@ -10,7 +10,7 @@ public:
 
 	Player(Map& map);
 
-	int FoodCount;
+	int pelletCount;
 	int score; //high-score?
 
 	void update();

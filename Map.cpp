@@ -37,7 +37,11 @@ std::string map2[board_cell_height] = {
 };
 
 
-Map::Map(int ID, borderList& border) : border(border) {
+Map::Map(int ID, borderList& border) : border(border),
+pelletTexture("./Sprites/pellet.png", false, sf::IntRect({24,24}, {0,0})), 
+wallTexture("./Sprites/wall.png", false, sf::IntRect({24,24}, {0,0})),
+emptyTexture("./Sprites/empty.png", false, sf::IntRect({24,24}, {0,0}))
+{
 	mapID = ID;
 }
 
@@ -50,7 +54,7 @@ CellType Map::charToCell(char c) {
 	case '|':
 		return Wall;
 	case '.':
-		return Food;
+		return Pellet;
 	case 'P':
 		return Portal;
 	case 'X':
@@ -70,7 +74,7 @@ char Map::cellToChar(CellType c) {
 		return ' ';
 	case Wall:
 		return '|';
-	case Food:
+	case Pellet:
 		return '.';
 	case Portal:
 		return 'P';
@@ -100,34 +104,55 @@ char Map::checkCell(sf::Vector2f position) {
 
 	if (tilePos.x > board_cell_width || tilePos.x < 0) {
 		std::cout << "X DIŞINDA" << std::endl;
-		return '-';
+		return 'P';
 	}
 	else if (tilePos.y > board_cell_height || tilePos.y < 0) {
 		std::cout << "Y DIŞINDA" << std::endl;
-		return '-';
+		return 'P';
 	}
 
 
 	return map2[tilePos.y][tilePos.x];
 }
 
+
+WallDirection Map::wallPos(sf::Vector2i tilePos) {
+	//if (cellToChar(Wall) == map2[tilePos.x-1][tilePos.y] && cellToChar(Wall) == map2[tilePos.x + 1][tilePos.y] && tilePos.x + 1 < board_cell_height && tilePos.x - 1 >= 0) {
+	return WallDirection::TopLeftCorner;
+	return WallDirection::Horizontal;
+	//}
+	return WallDirection::Vertical;
+}
+
 void Map::printMap() {
 
+	sf::Sprite tile(wallTexture);
 
 	for (int y = 0; y < board_cell_height; y++) { // starting from 0 and controlling by map array
 		for (int x = 0; x < board_cell_width; x++) { 
-			sf::RectangleShape tile;
-			tile.setSize({ tile_size,tile_size });
+			//tile.setSize({ tile_size,tile_size });
 
-			if (map2[y][x] == '.') {
-				tile.setFillColor(sf::Color::Transparent);
+			if (map2[y][x] == cellToChar(Pellet)) {
+				tile.setTexture(pelletTexture);
 
 			}
-			else if (map2[y][x] == '|') {
-				tile.setFillColor(sf::Color::White);
-			}
+			else if (map2[y][x] == cellToChar(Wall)) {
+				WallDirection direction = wallPos({ y,x });
+
+				if (direction == WallDirection::Horizontal) {
+					wallTexture.loadFromFile("./Sprites/wall-horizontal.png");
+				}
+				else if (WallDirection::Vertical == direction) {
+					wallTexture.loadFromFile("./Sprites/wall-vertical.png");
+				}
+				else {
+					wallTexture.loadFromFile("./Sprites/wall-corner.png");
+				}
+					tile.setTexture(wallTexture);	
+			} 
 			else {
-				tile.setFillColor(sf::Color::Transparent); //for now
+				//tile.setFillColor(sf::Color::Transparent); //for now
+				tile.setTexture(emptyTexture);
 			}
 			tile.setPosition({ (float)((x * tile_size) + border.left_pos), (float)((y * tile_size) + border.up_pos) });
 			tiles.push_back(tile); // then adjusting tile to arena

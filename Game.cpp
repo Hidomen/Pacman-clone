@@ -4,9 +4,12 @@
 constexpr sf::Color bgColor = { 123,50,230 };
 
 
-Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, border), player(map), ghost1(map), ghost2(map) {
+Game::Game(sf::RenderWindow& window, int mapID) : window(window),
+map(mapID, border), player(map),  ghost1(map), ghost2(map) {
 
     isInit = false;
+    delay_time = 0.f;
+    timer_time = 0.f;
 
     //never changes
     grid_lines = drawGrid(window, tile_size);
@@ -24,6 +27,8 @@ Game::Game(sf::RenderWindow& window, int mapID) : window(window), map(mapID, bor
     border.left_pos  = arena.getGlobalBounds().getCenter().x - arena.getSize().x / 2.f;
 
     move_speed = .20f;
+
+    player.texture.loadFromFile("./Sprites/Pacman.png");
 }
 
 
@@ -63,7 +68,7 @@ void Game::init() {
     player.shape.setPosition(sf::Vector2f(player.position));
 
     player.score = 0;
-    player.FoodCount = 0;
+    player.pelletCount = 0;
 
     map.printMap();
 
@@ -93,15 +98,17 @@ void Game::render() {
 
     window.draw(arena);
 
-    window.draw(player.shape);
-    window.draw(ghost1.shape);
-    window.draw(ghost2.shape);
-
     for (auto& tile : map.tiles) {
         window.draw(tile);
     }
+    
+    window.draw(ghost1.shape);
+    window.draw(ghost2.shape);
 
-    window.draw(grid_lines);
+    window.draw(player.shape);
+    //window.draw(player.sprite);
+
+    //window.draw(grid_lines);
 
     window.display();
 }
