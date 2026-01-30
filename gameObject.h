@@ -4,7 +4,7 @@
 #include "Map.h"
 #include <iostream>
 
-static float step = tile_size;
+static float step = tile_size / 4.f;
 
 
 //bunların burda ne işi var
@@ -22,16 +22,18 @@ public:
 	gameObject(Map& map);
 	
 	sf::Vector2f position;
+	sf::Vector2f targetPosition;
 
-	Direction object_direction;
-	Direction next_direction;
+	Direction objectDirection;
+	Direction	nextDirection;
 
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::RectangleShape shape;
+
 //private:
 
-	void move();
+	//void move();
 	void changeDirection(Direction new_direction);
 	void checkRotation();
 

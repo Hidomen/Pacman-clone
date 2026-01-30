@@ -1,4 +1,4 @@
-#include "Engine.h"
+﻿#include "Engine.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -8,13 +8,10 @@ Engine::Engine()
             static_cast<unsigned>(width),
             static_cast<unsigned>(height)
         } },
-        "Pacman by Hidomen",
-        sf::Style::Default
-    ),mapID(1), mainMenu(window, state, width), game(window, mapID), pause(window)
+        "Pacman by Hidomen", sf::Style::Default
+    ), stateManager(window)
 {
     //mapID = 1;
-    state = MenuState::MainMenu;
-    
 }
 
 void Engine::handleEvents() {
@@ -22,21 +19,35 @@ void Engine::handleEvents() {
     while (std::optional event = window.pollEvent()) {
 
         if (event->is<sf::Event::Closed>()) {
-            std::cout << "[ENGINE] - Program is closed. By window." << std::endl;
-            state = MenuState::Exit;
+            std::cout << "[▬] - Program is closed. By window." << std::endl;
+            stateManager.changeInitState(MenuState::Exit);
         }
 
         //key pressed states
         if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
 
-            //escape->>close
+            //escape->>goto MainMenu->>Close
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                std::cout << "[ENGINE] - Program is closed. By 'ESC' button." << std::endl;
-                state = MenuState::Exit;
+                if (stateManager.contState != MenuState::MainMenu) {
+                    stateManager.changeInitState(MenuState::MainMenu);
+                }
+                else {
+                    std::cout << "[] - Program is closed. By 'ESC' button." << std::endl;
+                    stateManager.changeInitState(MenuState::Exit);
+                }
+                
             }
 
-            if (keyPressed->scancode == sf::Keyboard::Scancode::Enter && state == MenuState::InGame) { //for a brief moment
-                state = MenuState::Pause;
+            //Enter->>Pause or UnPause the Game
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Enter) {
+                if (stateManager.contState == MenuState::InGame) {
+                    
+                    stateManager.changeContState(MenuState::Pause);
+                }
+                else if (stateManager.contState == MenuState::Pause) {
+                    stateManager.changeContState(MenuState::InGame);
+                }
+                
             }
 
             
@@ -46,40 +57,10 @@ void Engine::handleEvents() {
 }
 
 void Engine::run() {
-    while (isOpen()) {
+    while (window.isOpen()) {
 
         handleEvents();
 
-        switch (state){
-
-        case MenuState::MainMenu:
-            mainMenu.update();
-            mainMenu.render();
-            break;
-
-        case MenuState::MainOptions:
-            break;
-
-        case MenuState::InGame:
-            game.update();
-            game.render();
-            break;
-        
-        case MenuState::Pause:
-            pause.update();
-            pause.render();
-            break;
-
-        case MenuState::InGameOptions:
-            break;
-
-        case MenuState::Exit:
-            window.close();
-            break;
-        }   
+        stateManager.update();
     }
-}
-
-bool Engine::isOpen() {
-    return window.isOpen();
 }

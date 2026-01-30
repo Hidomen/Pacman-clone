@@ -14,5 +14,9 @@ public:
 	int score; //high-score?
 
 	void update();
+
+	void move();
+
+	void checkCollision();
 };
 

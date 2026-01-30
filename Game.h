@@ -17,13 +17,11 @@ public:
 	sf::Clock delayClock;
 	sf::Clock timerClock; //cant start with 0
 
-	float move_speed;
-	float delay_time;
-	float timer_time;
-	bool isInit;
+	float moveSpeed;
+	float delayTime;
+	float timerTime;
 
 	borderList border;
-
 
 	Map map;
 
@@ -36,8 +34,11 @@ public:
 	Game(sf::RenderWindow& window, int mapID);
 	
 
-	sf::VertexArray grid_lines;
+	sf::VertexArray gridLines;
 
+	sf::Font font;
+	sf::Text score;
+	sf::Text highScore;
 
 	void inputSystem();
 

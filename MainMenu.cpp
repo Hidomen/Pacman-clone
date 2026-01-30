@@ -38,6 +38,7 @@ void MainMenu::update() {
 
 		if (play.isClicked()) {
 			state = MenuState::InGame;
+			
 		}
 	}
 

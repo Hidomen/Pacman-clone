@@ -30,15 +30,13 @@ public:
 	int mapID;
 	borderList& border;
 	
-	std::vector<sf::Sprite> tiles;
+	std::vector<sf::Sprite> tileVector; //make it 2D, or 2D reachable
+	std::vector<bool> pelletVector;
+	//sf::Sprite tilles[board_cell_height][board_cell_width];
+	//std::vector<std::vector<sf::Sprite>> spriteMap;
 
-
-	
 	sf::Texture pelletTexture;
-	//sf::Sprite pelletSprite;
-
 	sf::Texture wallTexture;
-	//sf::Sprite wallSprite;
 	sf::Texture emptyTexture;
 
 
@@ -46,13 +44,18 @@ public:
 
 
 	CellType charToCell(char c);
-	char cellToChar(CellType c);
+	char cellToChar(CellType c); // cancel it
+
 
 	char checkCell(sf::Vector2f position);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
-	WallDirection wallPos(sf::Vector2i tilePos);
 
-	void printMap();
+	CellType positionToTile(sf::Vector2f position);
+
+
+	void wallTexturer(sf::Vector2i tilePos);
+
+	void load();
 
 private:
 	

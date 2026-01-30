@@ -1,7 +1,7 @@
 ﻿#include "Map.h"
 #include <iostream>
 
-
+//std::array <std::string, board_cell_height> map2 = {
 std::string map2[board_cell_height] = {
 	"||||||||||||||||||||||||||||",//1
 	"|............||............|",//2
@@ -12,21 +12,21 @@ std::string map2[board_cell_height] = {
 	"|.||||.||.||||||||.||.||||.|",//7
 	"|.||||.||.||||||||.||.||||.|",//8
 	"|......||....||....||......|",//9
-	"||||||.|||||.||.|||||.||||||",//10
-	"-----|.|||||.||.|||||.|-----",//11
-	"-----|.||..........||.|-----",//12
-	"-----|.||.|||XX|||.||.|-----",//13
-	"||||||.||.|      |.||.||||||",//14
-	"P.........|      |.........P",//15
-	"||||||.||.|      |.||.||||||",//16
-	"-----|.||.||||||||.||.|-----",//17
-	"-----|.||..........||.|-----",//18
-	"-----|.||.||||||||.||.|-----",//19
-	"||||||.||.||||||||.||.||||||",//20
+	"||||||.||||| || |||||.||||||",//10
+	"     |.||||| || |||||.|     ",//11
+	"     |.||          ||.|     ",//12
+	"     |.|| |||XX||| ||.|     ",//13
+	"||||||.|| |      | ||.||||||",//14
+	"P     .   |      |   .     P",//15
+	"||||||.|| |      | ||.||||||",//16
+	"     |.|| |||||||| ||.|     ",//17
+	"     |.||          ||.|     ",//18
+	"     |.|| |||||||| ||.|     ",//19
+	"||||||.|| |||||||| ||.||||||",//20
 	"|............||............|",//21
 	"|.||||.|||||.||.|||||.||||.|",//22
 	"|.||||.|||||.||.|||||.||||.|",//23
-	"|...||................||...|",//24
+	"|...||.......  .......||...|",//24
 	"|||.||.||.||||||||.||.||.|||",//25
 	"|||.||.||.||||||||.||.||.|||",//26
 	"|......||....||....||......|",//27
@@ -38,11 +38,14 @@ std::string map2[board_cell_height] = {
 
 
 Map::Map(int ID, borderList& border) : border(border),
-pelletTexture("./Sprites/pellet.png", false, sf::IntRect({24,24}, {0,0})), 
-wallTexture("./Sprites/wall.png", false, sf::IntRect({24,24}, {0,0})),
-emptyTexture("./Sprites/empty.png", false, sf::IntRect({24,24}, {0,0}))
+pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({24,24}, {0,0})),
+  wallTexture	(sf::Vector2u({24,24}),  false),
+ emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({24,24}, {0,0}))
+
 {
 	mapID = ID;
+
+	//spriteMap.resize(board_cell_height, std::vector<sf::Sprite>(board_cell_width));
 }
 
 // | = Wall, . = Food, Space = Empty, - = Restricted, P = Portal
@@ -95,36 +98,64 @@ sf::Vector2i Map::posToTile(sf::Vector2f position) {
 			static_cast<int>(std::floor((position.y - border.up_pos ) / tile_size)) };
 }
 
+
+
 //controls cell by position with respects of arena
 char Map::checkCell(sf::Vector2f position) {
 	sf::Vector2i tilePos = posToTile(position);
-	std::cout << tilePos.x << " , " << tilePos.y << std::endl;
+
+	//std::cout << tilePos.x << " , " << tilePos.y << std::endl;
 
 	//std::cout << map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)] << " ";
 
+	//outside of x
 	if (tilePos.x > board_cell_width || tilePos.x < 0) {
-		std::cout << "X DIŞINDA" << std::endl;
 		return 'P';
 	}
+	//outside of y
 	else if (tilePos.y > board_cell_height || tilePos.y < 0) {
-		std::cout << "Y DIŞINDA" << std::endl;
 		return 'P';
 	}
 
-
-	return map2[tilePos.y][tilePos.x];
+	return charToCell(map2[tilePos.y][tilePos.x]);
 }
 
 
-WallDirection Map::wallPos(sf::Vector2i tilePos) {
-	//if (cellToChar(Wall) == map2[tilePos.x-1][tilePos.y] && cellToChar(Wall) == map2[tilePos.x + 1][tilePos.y] && tilePos.x + 1 < board_cell_height && tilePos.x - 1 >= 0) {
-	return WallDirection::TopLeftCorner;
-	return WallDirection::Horizontal;
-	//}
-	return WallDirection::Vertical;
+CellType Map::positionToTile(sf::Vector2f position) {
+	sf::Vector2i tilePos = posToTile(position);
+
+	sf::Sprite tile = tileVector[tilePos.y * 29 + tilePos.x];
+	if (checkCell({ tile.getPosition().x, tile.getPosition().x }) == Pellet) {
+		std::cout << "PELLEETTTTT" << std::endl;
+	}
+
+	return Wall;
 }
 
-void Map::printMap() {
+//based on neighbors
+void Map::wallTexturer(sf::Vector2i tilePos) {
+	wallTexture.loadFromFile("./Sprites/wall-vertical.png");
+	return;
+
+	if (tilePos.y - 1 > 0 && tilePos.y + 1 < board_cell_height) {
+		//return;
+		//problem is in this if
+		if (cellToChar(Wall) == map2[tilePos.y - 1][tilePos.x] && cellToChar(Wall) == map2[tilePos.y + 1][tilePos.x]) {
+			wallTexture.loadFromFile("./Sprites/wall-vertical.png");
+			return;
+
+		}
+		return;
+
+	}
+	else {
+		wallTexture.loadFromFile("./Sprites/wall-horizontal.png");
+		return;
+	}
+	return;
+}
+
+void Map::load() {
 
 	sf::Sprite tile(wallTexture);
 
@@ -133,31 +164,22 @@ void Map::printMap() {
 			//tile.setSize({ tile_size,tile_size });
 
 			if (map2[y][x] == cellToChar(Pellet)) {
+				//add to another vector
 				tile.setTexture(pelletTexture);
 
 			}
 			else if (map2[y][x] == cellToChar(Wall)) {
-				WallDirection direction = wallPos({ y,x });
 
-				if (direction == WallDirection::Horizontal) {
-					wallTexture.loadFromFile("./Sprites/wall-horizontal.png");
-				}
-				else if (WallDirection::Vertical == direction) {
-					wallTexture.loadFromFile("./Sprites/wall-vertical.png");
-				}
-				else {
-					wallTexture.loadFromFile("./Sprites/wall-corner.png");
-				}
-					tile.setTexture(wallTexture);	
+				wallTexturer({y,x});
+				tile.setTexture(wallTexture);	
 			} 
 			else {
 				//tile.setFillColor(sf::Color::Transparent); //for now
 				tile.setTexture(emptyTexture);
 			}
 			tile.setPosition({ (float)((x * tile_size) + border.left_pos), (float)((y * tile_size) + border.up_pos) });
-			tiles.push_back(tile); // then adjusting tile to arena
+			tileVector.push_back(tile); // then adjusting tile to arena
 
 		}
-		std::cout << std::endl;
 	}
 }

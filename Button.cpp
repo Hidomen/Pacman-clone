@@ -3,14 +3,12 @@
 
 Button::Button(sf::RenderWindow& window, std::string inputText, sf::Vector2f position, int button_size) : window(window),
 font("./Fonts/alagard.ttf"), 
-text_size(button_size * 0.75f), text(font, inputText, text_size), 
-hitbox({ text.getGlobalBounds().size.x + 20.f , static_cast<float>(button_size)}) { //get rid of magic numbers
+text_size(button_size), text(font, inputText, text_size), 
+hitbox({ (text.getGlobalBounds().size.x + 20.f) * 1.25f , static_cast<float>(button_size * 1.25f)}) { //get rid of magic numbers
 
 	text.setFillColor(sf::Color::White);
 
 	text.setPosition(position);
-	
-	std::cout << text.getCharacterSize() << std::endl;
 	
 	hitbox.setPosition({position.x - 10.f, position.y}); //ortala
 	hitbox.setFillColor(sf::Color::Transparent);

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-enum class MenuState { MainMenu, MainOptions, InGame, Pause, InGameOptions, Exit };
+
 
 class Button
 {
