@@ -38,9 +38,9 @@ std::string map2[board_cell_height] = {
 
 
 Map::Map(int ID, borderList& border) : border(border),
-pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({24,24}, {0,0})),
-  wallTexture	(sf::Vector2u({24,24}),  false),
- emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({24,24}, {0,0}))
+pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize,tileSize}, {0,0})),
+  wallTexture	(sf::Vector2u({tileSize,tileSize}),  false),
+ emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize,tileSize}, {0,0}))
 
 {
 	mapID = ID;
@@ -94,11 +94,9 @@ char Map::cellToChar(CellType c) {
 //transforms position into map's coordinates with respects of arena
 sf::Vector2i Map::posToTile(sf::Vector2f position) { 
 
-	return { static_cast<int>(std::floor((position.x - border.left_pos) / tile_size)), 
-			static_cast<int>(std::floor((position.y - border.up_pos ) / tile_size)) };
+	return { static_cast<int>(std::floor((position.x - border.left_pos) / tileSize)), 
+			static_cast<int>(std::floor((position.y - border.up_pos ) / tileSize)) };
 }
-
-
 
 //controls cell by position with respects of arena
 char Map::checkCell(sf::Vector2f position) {
@@ -120,17 +118,65 @@ char Map::checkCell(sf::Vector2f position) {
 	return charToCell(map2[tilePos.y][tilePos.x]);
 }
 
-
-CellType Map::positionToTile(sf::Vector2f position) {
+sf::Sprite Map::getVector(sf::Vector2f position) {
 	sf::Vector2i tilePos = posToTile(position);
 
-	sf::Sprite tile = tileVector[tilePos.y * 29 + tilePos.x];
+	return tileVector[tilePos.y * board_cell_width + tilePos.x];
+}
+
+//getting access on a 1D vector from 2D position
+CellType Map::positionToTile(sf::Vector2f position) {
+
+	sf::Sprite tile = getVector(position);
 	if (checkCell({ tile.getPosition().x, tile.getPosition().x }) == Pellet) {
 		std::cout << "PELLEETTTTT" << std::endl;
 	}
 
 	return Wall;
 }
+
+sf::Vector2f Map::posCentralize(sf::Vector2f position, sf::Vector2f objectSize) {
+	return { position.x + (objectSize.x / 2.f), position.y + (objectSize.y / 2.f) };
+}
+
+bool Map::checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction) {
+
+	sf::Vector2i closestTile = posToTile(position);
+
+	sf::Sprite respectedWall = getVector(position);
+
+	sf::Vector2f objectSize = objectHitbox.getGlobalBounds().size;
+
+	//first centralize
+	sf::Vector2f objectBorder = posCentralize(position, objectSize);
+
+
+	switch (direction){
+
+	case Direction::Down:
+		objectBorder.y = objectBorder.y + (objectSize.y / 2.f) + step;
+
+		while (respectedWall.getGlobalBounds().contains(objectBorder)) { //or not contains upper border
+			respectedWall = getVector({ position.x, position.y + tileSize });
+		}
+
+		break;
+	case Direction::Up:
+		objectBorder.y = objectBorder.y - (objectSize.y / 2.f) + step;
+		break;
+	case Direction::Right:
+		objectBorder.x = objectBorder.x + (objectSize.x / 2.f) + step;
+		break;
+	case Direction::Left:
+		objectBorder.x = objectBorder.x - (objectSize.x / 2.f) + step;
+		break;
+	}
+
+
+	return false;
+}
+
+
 
 //based on neighbors
 void Map::wallTexturer(sf::Vector2i tilePos) {
@@ -177,7 +223,7 @@ void Map::load() {
 				//tile.setFillColor(sf::Color::Transparent); //for now
 				tile.setTexture(emptyTexture);
 			}
-			tile.setPosition({ (float)((x * tile_size) + border.left_pos), (float)((y * tile_size) + border.up_pos) });
+			tile.setPosition({ (float)((x * tileSize) + border.left_pos), (float)((y * tileSize) + border.up_pos) });
 			tileVector.push_back(tile); // then adjusting tile to arena
 
 		}

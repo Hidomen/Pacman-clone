@@ -2,7 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
-constexpr int tile_size = 24;
+#include "Globals.h"
+
+
 
 
 static const int board_cell_height = 31;
@@ -31,9 +33,7 @@ public:
 	borderList& border;
 	
 	std::vector<sf::Sprite> tileVector; //make it 2D, or 2D reachable
-	std::vector<bool> pelletVector;
-	//sf::Sprite tilles[board_cell_height][board_cell_width];
-	//std::vector<std::vector<sf::Sprite>> spriteMap;
+	std::vector<bool> pelletVector; //if I can reach pellet from their sprite dont need
 
 	sf::Texture pelletTexture;
 	sf::Texture wallTexture;
@@ -44,16 +44,18 @@ public:
 
 
 	CellType charToCell(char c);
-	char cellToChar(CellType c); // cancel it
+	char cellToChar(CellType c);
 
 
 	char checkCell(sf::Vector2f position);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
 
 	CellType positionToTile(sf::Vector2f position);
-
+	sf::Vector2f posCentralize(sf::Vector2f position, sf::Vector2f objectSize);
+	bool checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction);
 
 	void wallTexturer(sf::Vector2i tilePos);
+	sf::Sprite getVector(sf::Vector2f position);
 
 	void load();
 

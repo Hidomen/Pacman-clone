@@ -40,20 +40,19 @@ void Engine::handleEvents() {
 
             //Enter->>Pause or UnPause the Game
             if (keyPressed->scancode == sf::Keyboard::Scancode::Enter) {
+
                 if (stateManager.contState == MenuState::InGame) {
                     
                     stateManager.changeContState(MenuState::Pause);
                 }
                 else if (stateManager.contState == MenuState::Pause) {
+
                     stateManager.changeContState(MenuState::InGame);
                 }
-                
             }
-
-            
-        }
+        } 
+        //
     }
-
 }
 
 void Engine::run() {

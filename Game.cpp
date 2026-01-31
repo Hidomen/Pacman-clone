@@ -14,9 +14,9 @@ score(font, "SCORE: ", 123), highScore(font, "HIGHSCORE: ", 123)
     timerTime = 0.f;
 
     //never changes
-    gridLines = drawGrid(window, tile_size);
+    gridLines = drawGrid(window, tileSize);
 
-    arena.setSize({ tile_size * (board_cell_width), tile_size * (board_cell_height) });
+    arena.setSize({ tileSize * (board_cell_width), tileSize * (board_cell_height) });
 
     arena.setPosition({ width / 2.f, height / 2.f });
     arena.setOrigin(arena.getGeometricCenter());
@@ -67,7 +67,7 @@ void Game::init() {
 
     moveSpeed = .03f; //smaller it gets faster player moves
 
-    player.position = { tile_size * 16, tile_size * 25 }; //start point
+    player.position = { tileSize * 16, tileSize * 25 }; //start point
     player.shape.setPosition(sf::Vector2f(player.position));
 
     player.score = 0;

@@ -29,10 +29,10 @@ void Player::checkCollision() {
 	}
 	if (Portal == map.checkCell(position)) {
 		if (Direction::Left == objectDirection) {
-			shape.setPosition({static_cast<float>((tile.x + board_cell_width) * tile_size), position.y});
+			shape.setPosition({static_cast<float>((tile.x + board_cell_width) * tileSize), position.y});
 		}
 		else if (Direction::Right == objectDirection) {
-			shape.setPosition({static_cast<float>((tile.x - board_cell_width + 4) * tile_size), position.y });
+			shape.setPosition({static_cast<float>((tile.x - board_cell_width + 4) * tileSize), position.y });
 		}
 	}
 

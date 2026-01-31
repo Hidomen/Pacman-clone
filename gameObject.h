@@ -3,16 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
 #include <iostream>
+#include "Globals.h"
 
-static float step = tile_size / 4.f;
 
 
 //bunların burda ne işi var
-static float width = tile_size * (board_cell_width + 4);
-static float height = tile_size * (board_cell_height + 4);
+static float width = tileSize * (board_cell_width + 4);
+static float height = tileSize * (board_cell_height + 4);
 //
 
-enum class Direction {Down, Up, Right, Left};
 
 class gameObject{
 protected:
