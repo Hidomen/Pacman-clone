@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Map.h"
 
-Player::Player(Map& map) : gameObject(map) {
+Player::Player(Map& map) : Entity(map), nextDirection(entityDirection) {
 	//rectangle_init(player, sf::Vector2f{ width, height }, sf::Vector2f{ grid_size, grid_size });
 	
 	Player::shape.setFillColor(sf::Color::Yellow);
@@ -18,62 +18,117 @@ Player::Player(Map& map) : gameObject(map) {
 	
 }
 
-void Player::checkCollision() {
-	sf::Vector2i tile = map.posToTile(position);
+void Player::changeDirection(Direction new_direction) {
+	if (new_direction == entityDirection) return;
 
-	if (Wall == map.checkCell(position)) {
-		return;
-	}
-	if (Pellet == map.checkCell(position)) {
-		//first control if its already eaten, make it clear and give point
-	}
-	if (Portal == map.checkCell(position)) {
-		if (Direction::Left == objectDirection) {
-			shape.setPosition({static_cast<float>((tile.x + board_cell_width) * tileSize), position.y});
+	nextDirection = new_direction;
+	//update sprite //
+
+}
+
+void Player::portal() {
+	//out of border
+	if (position.x >= map.border.right_pos ||
+		position.x <= map.border.left_pos ||
+		position.y >= map.border.down_pos ||
+		position.y <= map.border.up_pos) {
+
+		switch (entityDirection){
+		case Direction::Down:
+			shape.setPosition({position.x, map.border.up_pos});
+			break;
+		case Direction::Up:
+			shape.setPosition({ position.x, map.border.down_pos });
+			break;
+		case Direction::Right:
+			shape.setPosition({ map.border.left_pos, position.y });
+			break;
+		case Direction::Left:
+			shape.setPosition({ map.border.right_pos, position.y });
+			break;
 		}
-		else if (Direction::Right == objectDirection) {
-			shape.setPosition({static_cast<float>((tile.x - board_cell_width + 4) * tileSize), position.y });
-		}
+
 	}
 
 }
 
-void Player::move() {
+void Player::checkRotation(){
+	sf::Vector2f nextPos;
 
-	//std::cout << "LEFT BORDER: " << map.border.left_pos << " RIGHT BORDER:"	<< map.border.right_pos << std::endl;
-	//std::cout << "UP BORDER: "	 << map.border.up_pos << " DOWN BORDER: "	<< map.border.down_pos << std::endl;
+	switch (nextDirection) {
 
-	//std::cout << "NEXT DIR: " << next_direction << "   OBJ. DIR: " << object_direction << std::endl;
-
-	checkRotation();
-
-	switch (objectDirection) {
-
-	case Direction::Down:
-		//position is based by top-left corner of shape
-		if (Wall == map.checkCell({ position.x, position.y + shape.getSize().y + step })) return;
-		shape.move({ 0, step });
+	case Direction::Down: // change x and y
+		nextPos = { position.x, position.y + tileSize };
 		break;
-
 	case Direction::Up:
-		if (Wall == map.checkCell({ position.x,position.y - step })) return;
-		shape.move({ 0, -step });
+		nextPos = { position.x, position.y - tileSize };
 		break;
-
 	case Direction::Right:
-		if (Wall == map.checkCell({ position.x + shape.getSize().x + step , position.y })) return;
-		shape.move({ step, 0 });
+		nextPos = { position.x + tileSize, position.y };
 		break;
-
 	case Direction::Left:
-		if (Wall == map.checkCell({ position.x - step , position.y })) return;
-		shape.move({ -step, 0 });
+		nextPos = { position.x - tileSize, position.y };
 		break;
-
 	}
 
-	checkCollision();
-	position = shape.getPosition();
+	if (Wall != map.checkCellbyPos(nextPos)) {
+		entityDirection = nextDirection;
+	}
+}
 
-	//std::cout << "MOVED POS: " << position.x << ", " << position.y << std::endl;
+//sf::Sprite nextCell = map.tileVector[position.y * board_cell_width + position.x];
+
+
+//for every frame of moveme
+
+void Player::move() {
+
+	//if on grid
+	if (map.isOnGrid(position)) {
+		//check rotation
+		checkRotation();
+
+		//check next wall collision -> return
+		sf::Vector2f nextPosForCollision;
+
+		switch (entityDirection){
+
+		case Direction::Down: // change x and y
+			nextPosForCollision = { position.x, position.y + tileSize };
+			break;
+		case Direction::Up:
+			nextPosForCollision = { position.x, position.y - tileSize };
+			break;
+		case Direction::Right:
+			nextPosForCollision = { position.x + tileSize, position.y };
+			break;
+		case Direction::Left:
+			nextPosForCollision = { position.x - tileSize, position.y };
+			break;
+		}
+		if (Wall == map.checkCellbyPos(nextPosForCollision)) {
+			return;
+		}
+	}
+
+	switch (entityDirection){
+
+	case Direction::Down:
+		//shape.setPosition({ position.x, position.y + step });
+		shape.move({ 0, step });
+		break;
+	case Direction::Up:
+		shape.move({ 0, -step });
+		break;
+	case Direction::Right:
+		shape.move({ step, 0 });
+		break;
+	case Direction::Left:
+		shape.move({ -step, 0 });
+		break;
+	}
+
+	portal();
+
+	position = shape.getPosition();
 }

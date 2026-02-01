@@ -34,7 +34,14 @@ score(font, "SCORE: ", 123), highScore(font, "HIGHSCORE: ", 123)
 
 
 void Game::inputSystem() {
-
+    //debugging
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::U)) {
+        moveSpeed = 0.05f;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::J)) {
+        moveSpeed = 0.5f;
+    }
+    //
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
 
@@ -65,7 +72,7 @@ void Game::inputSystem() {
 void Game::init() {
     timerClock.restart();
 
-    moveSpeed = .03f; //smaller it gets faster player moves
+    moveSpeed = .001f; //smaller it gets faster player moves
 
     player.position = { tileSize * 16, tileSize * 25 }; //start point
     player.shape.setPosition(sf::Vector2f(player.position));
@@ -106,7 +113,7 @@ void Game::render() {
     window.draw(player.shape);
     //window.draw(player.sprite);
 
-    //window.draw(grid_lines);
+    //window.draw(gridLines);
 
     window.display();
 }

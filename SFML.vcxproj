@@ -130,7 +130,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -145,7 +145,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="funcs.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="gameObject.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MainMenu.h" />

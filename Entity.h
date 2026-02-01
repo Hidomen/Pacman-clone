@@ -13,18 +13,19 @@ static float height = tileSize * (board_cell_height + 4);
 //
 
 
-class gameObject{
+class Entity{
 protected:
 	Map& map;
 
 public:
-	gameObject(Map& map);
+	Entity(Map& map);
 	
 	sf::Vector2f position;
 	sf::Vector2f targetPosition;
 
-	Direction objectDirection;
-	Direction	nextDirection;
+	sf::Vector2i lastTilePos;
+
+	Direction entityDirection;
 
 	sf::Texture texture;
 	sf::Sprite sprite;
@@ -33,8 +34,6 @@ public:
 //private:
 
 	//void move();
-	void changeDirection(Direction new_direction);
-	void checkRotation();
 
 };
 

@@ -47,12 +47,16 @@ public:
 	char cellToChar(CellType c);
 
 
-	char checkCell(sf::Vector2f position);
+	char checkCellbyPos(sf::Vector2f position);
+	CellType checkCellbyTile(sf::Vector2i tile);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
 
 	CellType positionToTile(sf::Vector2f position);
+
 	sf::Vector2f posCentralize(sf::Vector2f position, sf::Vector2f objectSize);
 	bool checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction);
+
+	bool isOnGrid(sf::Vector2f position);
 
 	void wallTexturer(sf::Vector2i tilePos);
 	sf::Sprite getVector(sf::Vector2f position);

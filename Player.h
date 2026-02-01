@@ -1,11 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "gameObject.h"
+#include "Entity.h"
 #include "Map.h"
 
 
-class Player : public gameObject {
+class Player : public Entity {
 public:
 
 	Player(Map& map);
@@ -17,6 +17,11 @@ public:
 
 	void move();
 
-	void checkCollision();
+	Direction nextDirection;
+
+	void portal();
+	void changeDirection(Direction direction);
+	void checkRotation();
+	//void portal(); //if its out of boundry then tp the opposite side
 };
 

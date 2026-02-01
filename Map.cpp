@@ -98,8 +98,13 @@ sf::Vector2i Map::posToTile(sf::Vector2f position) {
 			static_cast<int>(std::floor((position.y - border.up_pos ) / tileSize)) };
 }
 
+CellType Map::checkCellbyTile(sf::Vector2i tile) {
+	return charToCell(map2[tile.y][tile.x]);
+}
+
+
 //controls cell by position with respects of arena
-char Map::checkCell(sf::Vector2f position) {
+char Map::checkCellbyPos(sf::Vector2f position) {
 	sf::Vector2i tilePos = posToTile(position);
 
 	//std::cout << tilePos.x << " , " << tilePos.y << std::endl;
@@ -108,11 +113,11 @@ char Map::checkCell(sf::Vector2f position) {
 
 	//outside of x
 	if (tilePos.x > board_cell_width || tilePos.x < 0) {
-		return 'P';
+		//return 'P';
 	}
 	//outside of y
 	else if (tilePos.y > board_cell_height || tilePos.y < 0) {
-		return 'P';
+		//return 'P';
 	}
 
 	return charToCell(map2[tilePos.y][tilePos.x]);
@@ -128,7 +133,7 @@ sf::Sprite Map::getVector(sf::Vector2f position) {
 CellType Map::positionToTile(sf::Vector2f position) {
 
 	sf::Sprite tile = getVector(position);
-	if (checkCell({ tile.getPosition().x, tile.getPosition().x }) == Pellet) {
+	if (checkCellbyPos({ tile.getPosition().x, tile.getPosition().x }) == Pellet) {
 		std::cout << "PELLEETTTTT" << std::endl;
 	}
 
@@ -139,6 +144,9 @@ sf::Vector2f Map::posCentralize(sf::Vector2f position, sf::Vector2f objectSize) 
 	return { position.x + (objectSize.x / 2.f), position.y + (objectSize.y / 2.f) };
 }
 
+//check collision only when on grid, WHEN on the grid first check rotation, and then movement
+
+//true for collision
 bool Map::checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction) {
 
 	sf::Vector2i closestTile = posToTile(position);
@@ -148,27 +156,49 @@ bool Map::checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHit
 	sf::Vector2f objectSize = objectHitbox.getGlobalBounds().size;
 
 	//first centralize
-	sf::Vector2f objectBorder = posCentralize(position, objectSize);
+	sf::Vector2f futurePosRef = posCentralize(position, objectSize);
 
+	sf::Vector2i tileCell;
+	sf::Vector2i zikkim;
 
 	switch (direction){
 
 	case Direction::Down:
-		objectBorder.y = objectBorder.y + (objectSize.y / 2.f) + step;
+		//border of object in respected side
+		futurePosRef.y = futurePosRef.y + (objectSize.y / 2.f);
 
-		while (respectedWall.getGlobalBounds().contains(objectBorder)) { //or not contains upper border
-			respectedWall = getVector({ position.x, position.y + tileSize });
+		//finding appropiate cell for collision check
+		while (respectedWall.getGlobalBounds().contains(futurePosRef)) { //or not contains upper border
+			zikkim = posToTile({ position.x, position.y + tileSize });
+			//respectedWall = getVector();
+			respectedWall = tileVector[zikkim.y * 28 + zikkim.x];
 		}
 
+		//checking if its working
+		tileCell = posToTile(respectedWall.getPosition());
+		if (tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].getGlobalBounds().contains({futurePosRef.x, futurePosRef.y + step})) {
+			
+			tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].setColor(sf::Color::White);
+		}
+		else {
+
+			tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].setColor(sf::Color::Red);
+		}
+		//
+		if (respectedWall.getGlobalBounds().contains({ futurePosRef.x, futurePosRef.y + step })
+			&& checkCellbyPos(respectedWall.getPosition()) == Wall) {
+			return true;
+		}
 		break;
+
 	case Direction::Up:
-		objectBorder.y = objectBorder.y - (objectSize.y / 2.f) + step;
+		futurePosRef.y = futurePosRef.y - (objectSize.y / 2.f);
 		break;
 	case Direction::Right:
-		objectBorder.x = objectBorder.x + (objectSize.x / 2.f) + step;
+		futurePosRef.x = futurePosRef.x + (objectSize.x / 2.f);
 		break;
 	case Direction::Left:
-		objectBorder.x = objectBorder.x - (objectSize.x / 2.f) + step;
+		futurePosRef.x = futurePosRef.x - (objectSize.x / 2.f);
 		break;
 	}
 
@@ -228,4 +258,14 @@ void Map::load() {
 
 		}
 	}
+}
+
+bool Map::isOnGrid(sf::Vector2f position) {
+	float checkGridX = (position.x - border.left_pos) / 24.f;
+	float checkGridY = (position.y - border.up_pos) / 24.f;
+
+	if (checkGridX == std::floor(checkGridX) && checkGridY == std::floor(checkGridY)) {
+		return true;
+	}
+	return false;
 }

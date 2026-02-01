@@ -1,11 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "gameObject.h"
+#include "Entity.h"
 
 
 
-class Ghost : public gameObject{
+class Ghost : public Entity{
 public:
 	Ghost(Map& map);
 
