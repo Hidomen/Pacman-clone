@@ -19,6 +19,7 @@ public:
 
 	Direction nextDirection;
 
+	void pellet();
 	void portal();
 	void changeDirection(Direction direction);
 	void checkRotation();

@@ -26,12 +26,13 @@ void Player::changeDirection(Direction new_direction) {
 
 }
 
+//should be on entity.h
 void Player::portal() {
 	//out of border
-	if (position.x >= map.border.right_pos ||
-		position.x <= map.border.left_pos ||
-		position.y >= map.border.down_pos ||
-		position.y <= map.border.up_pos) {
+	if (position.x >= map.border.right_pos - shape.getSize().x ||
+		position.x <= map.border.left_pos  + shape.getSize().x ||
+		position.y >= map.border.down_pos  - shape.getSize().y ||
+		position.y <= map.border.up_pos	   + shape.getSize().y ) {
 
 		switch (entityDirection){
 		case Direction::Down:
@@ -41,7 +42,7 @@ void Player::portal() {
 			shape.setPosition({ position.x, map.border.down_pos });
 			break;
 		case Direction::Right:
-			shape.setPosition({ map.border.left_pos, position.y });
+			shape.setPosition({ map.border.left_pos + shape.getSize().x, position.y});
 			break;
 		case Direction::Left:
 			shape.setPosition({ map.border.right_pos, position.y });
@@ -50,6 +51,21 @@ void Player::portal() {
 
 	}
 
+}
+
+//only when on grid
+void Player::pellet() {
+	//if()
+	sf::Vector2i tilePos = map.posToTile(position);
+	sf::Sprite cell = map.tileVector[tilePos.y * board_cell_width + tilePos.x];
+
+	if (Pellet == map.checkCellbyPos(position)) {
+		map.tileVector[tilePos.y * board_cell_width + tilePos.x].setTexture(map.emptyTexture); //then change array element
+		map.pelletEaten(tilePos);
+		//add up to score
+		score += 10;
+		std::cout << score << std::endl;
+	}
 }
 
 void Player::checkRotation(){
@@ -82,10 +98,11 @@ void Player::checkRotation(){
 //for every frame of moveme
 
 void Player::move() {
-
+	//portal();
 	//if on grid
 	if (map.isOnGrid(position)) {
 		//check rotation
+		pellet();
 		checkRotation();
 
 		//check next wall collision -> return
@@ -128,7 +145,7 @@ void Player::move() {
 		break;
 	}
 
-	portal();
+	//portal();
 
 	position = shape.getPosition();
 }

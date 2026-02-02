@@ -269,3 +269,7 @@ bool Map::isOnGrid(sf::Vector2f position) {
 	}
 	return false;
 }
+
+void Map::pelletEaten(sf::Vector2i tile) {
+	map2[tile.y][tile.x] = ' ';
+}

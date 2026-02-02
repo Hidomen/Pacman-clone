@@ -46,7 +46,7 @@ public:
 	CellType charToCell(char c);
 	char cellToChar(CellType c);
 
-
+	void pelletEaten(sf::Vector2i tile);
 	char checkCellbyPos(sf::Vector2f position);
 	CellType checkCellbyTile(sf::Vector2i tile);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
