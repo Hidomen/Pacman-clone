@@ -1,7 +1,7 @@
 #include "Ghost.h"
 
 
-Ghost::Ghost(Map& map) : Entity(map) {
+Ghost::Ghost(Map& map, SoundManager& soundManager) : Entity(map, soundManager) {
 	shape.setSize({ tileSize, tileSize });
 	shape.setFillColor(sf::Color::Green);
 	//shape.setPosition({50,50});

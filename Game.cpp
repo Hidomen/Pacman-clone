@@ -4,8 +4,8 @@
 constexpr sf::Color bgColor = { 123,50,230 };
 
 
-Game::Game(sf::RenderWindow& window, int mapID) : window(window),
-map(mapID, border), player(map),  ghost1(map), ghost2(map),
+Game::Game(sf::RenderWindow& window, SoundManager& soundManager, int mapID) : window(window), soundManager(soundManager),
+map(mapID, border), player(map, soundManager),  ghost1(map, soundManager), ghost2(map, soundManager),
 font("./Fonts/alagard.ttf"),
 score(font, "SCORE: ", 123), highScore(font, "HIGHSCORE: ", 123)
 {
@@ -30,16 +30,18 @@ score(font, "SCORE: ", 123), highScore(font, "HIGHSCORE: ", 123)
 
 
     player.texture.loadFromFile("./Sprites/Pacman.png");
+
+    //map = new Map(1, border);
 }
 
 
 void Game::inputSystem() {
     //debugging
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::U)) {
-        moveSpeed = 0.05f;
+        moveSpeed += 0.20f;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::J)) {
-        moveSpeed = 0.5f;
+        moveSpeed -= 0.20f;
     }
     //
 
@@ -71,15 +73,16 @@ void Game::inputSystem() {
 
 void Game::init() {
     timerClock.restart();
+    window.clear();
 
-    moveSpeed = .001f; //smaller it gets faster player moves
+    moveSpeed = .03f; //smaller it gets, faster the player moves
 
     player.position = { tileSize * 16, tileSize * 25 }; //start point
     player.shape.setPosition(sf::Vector2f(player.position));
 
     player.score = 0;
-    player.pelletCount = 0;
 
+    window.clear();
     map.load();
 
     //music
@@ -89,6 +92,8 @@ void Game::init() {
 }
 
 void Game::update() {
+    soundManager.generalPlay();
+
     timerTime = timerClock.getElapsedTime().asSeconds();
     delayTime = delayClock.getElapsedTime().asSeconds();
 
@@ -117,3 +122,4 @@ void Game::render() {
 
     window.display();
 }
+

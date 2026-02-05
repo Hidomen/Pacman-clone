@@ -1,15 +1,15 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "Map.h"
 
-Player::Player(Map& map) : Entity(map), nextDirection(entityDirection) {
+Player::Player(Map& map, SoundManager& soundManager) : Entity(map, soundManager), nextDirection(entityDirection) {
 	//rectangle_init(player, sf::Vector2f{ width, height }, sf::Vector2f{ grid_size, grid_size });
 	
 	Player::shape.setFillColor(sf::Color::Yellow);
 
 	
 
-	Player::pelletCount = 0;
 	score = 0;
+	health = 3;
 
 	texture.loadFromFile("Sprites/Pacman.png", false, sf::IntRect({0,0},{24,24}));
 	//texture.update()
@@ -59,12 +59,19 @@ void Player::pellet() {
 	sf::Vector2i tilePos = map.posToTile(position);
 	sf::Sprite cell = map.tileVector[tilePos.y * board_cell_width + tilePos.x];
 
+	//pellet eaten
 	if (Pellet == map.checkCellbyPos(position)) {
+		//map'e at bu kısmı
 		map.tileVector[tilePos.y * board_cell_width + tilePos.x].setTexture(map.emptyTexture); //then change array element
 		map.pelletEaten(tilePos);
+
+		soundManager.eatState(true);
 		//add up to score
 		score += 10;
 		std::cout << score << std::endl;
+	}
+	else {
+		soundManager.eatState(false);
 	}
 }
 
@@ -98,6 +105,7 @@ void Player::checkRotation(){
 //for every frame of moveme
 
 void Player::move() {
+
 	//portal();
 	//if on grid
 	if (map.isOnGrid(position)) {

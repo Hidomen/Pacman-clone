@@ -8,11 +8,16 @@
 
 #include "Globals.h"
 
+#include "SoundManager.h"
+
+
 class StateManager{
 public:
 	sf::RenderWindow& window;
 
 	StateManager(sf::RenderWindow& window);
+
+	SoundManager soundManager;
 
 	MenuState contState;
 	MenuState initState; //goes to funcs.

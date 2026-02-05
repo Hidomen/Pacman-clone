@@ -2,7 +2,7 @@
 
 
 
-Entity::Entity(Map& map) : entityDirection(Direction::Left), map(map), sprite(sprite) {
+Entity::Entity(Map& map, SoundManager& soundManager) : entityDirection(Direction::Left), map(map), soundManager(soundManager), sprite(sprite) {
 	shape.setSize({ 24,24});
 }
 

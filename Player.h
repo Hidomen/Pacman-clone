@@ -4,14 +4,14 @@
 #include "Entity.h"
 #include "Map.h"
 
-
 class Player : public Entity {
 public:
 
-	Player(Map& map);
+	Player(Map& map, SoundManager& soundManager);
 
-	int pelletCount;
 	int score; //high-score?
+	int health; //3 for starting
+
 
 	void update();
 

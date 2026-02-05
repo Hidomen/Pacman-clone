@@ -33,7 +33,7 @@ public:
 	borderList& border;
 	
 	std::vector<sf::Sprite> tileVector; //make it 2D, or 2D reachable
-	std::vector<bool> pelletVector; //if I can reach pellet from their sprite dont need
+	int remainingPellet;
 
 	sf::Texture pelletTexture;
 	sf::Texture wallTexture;
@@ -50,11 +50,6 @@ public:
 	char checkCellbyPos(sf::Vector2f position);
 	CellType checkCellbyTile(sf::Vector2i tile);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
-
-	CellType positionToTile(sf::Vector2f position);
-
-	sf::Vector2f posCentralize(sf::Vector2f position, sf::Vector2f objectSize);
-	bool checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction);
 
 	bool isOnGrid(sf::Vector2f position);
 

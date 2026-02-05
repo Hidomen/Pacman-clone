@@ -9,9 +9,10 @@ Engine::Engine()
             static_cast<unsigned>(height)
         } },
         "Pacman by Hidomen", sf::Style::Default
-    ), stateManager(window)
+    ), stateManager(window), mapID(0)
 {
-    //mapID = 1;
+    window.setFramerateLimit(144); //does it have to be limited?
+
 }
 
 void Engine::handleEvents() {

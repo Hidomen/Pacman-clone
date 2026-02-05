@@ -12,11 +12,11 @@ public:
 	Engine();
 
 	void run();
-	
+	int mapID;
+
 
 private:
 	
-	int mapID;
 	sf::RenderWindow window;
 	
 	//int mapID;

@@ -44,7 +44,7 @@ pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize,tileSize}, {
 
 {
 	mapID = ID;
-
+	remainingPellet = 0;
 	//spriteMap.resize(board_cell_height, std::vector<sf::Sprite>(board_cell_width));
 }
 
@@ -129,85 +129,6 @@ sf::Sprite Map::getVector(sf::Vector2f position) {
 	return tileVector[tilePos.y * board_cell_width + tilePos.x];
 }
 
-//getting access on a 1D vector from 2D position
-CellType Map::positionToTile(sf::Vector2f position) {
-
-	sf::Sprite tile = getVector(position);
-	if (checkCellbyPos({ tile.getPosition().x, tile.getPosition().x }) == Pellet) {
-		std::cout << "PELLEETTTTT" << std::endl;
-	}
-
-	return Wall;
-}
-
-sf::Vector2f Map::posCentralize(sf::Vector2f position, sf::Vector2f objectSize) {
-	return { position.x + (objectSize.x / 2.f), position.y + (objectSize.y / 2.f) };
-}
-
-//check collision only when on grid, WHEN on the grid first check rotation, and then movement
-
-//true for collision
-bool Map::checkWallCollision(sf::Vector2f position, sf::RectangleShape objectHitbox, Direction direction) {
-
-	sf::Vector2i closestTile = posToTile(position);
-
-	sf::Sprite respectedWall = getVector(position);
-
-	sf::Vector2f objectSize = objectHitbox.getGlobalBounds().size;
-
-	//first centralize
-	sf::Vector2f futurePosRef = posCentralize(position, objectSize);
-
-	sf::Vector2i tileCell;
-	sf::Vector2i zikkim;
-
-	switch (direction){
-
-	case Direction::Down:
-		//border of object in respected side
-		futurePosRef.y = futurePosRef.y + (objectSize.y / 2.f);
-
-		//finding appropiate cell for collision check
-		while (respectedWall.getGlobalBounds().contains(futurePosRef)) { //or not contains upper border
-			zikkim = posToTile({ position.x, position.y + tileSize });
-			//respectedWall = getVector();
-			respectedWall = tileVector[zikkim.y * 28 + zikkim.x];
-		}
-
-		//checking if its working
-		tileCell = posToTile(respectedWall.getPosition());
-		if (tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].getGlobalBounds().contains({futurePosRef.x, futurePosRef.y + step})) {
-			
-			tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].setColor(sf::Color::White);
-		}
-		else {
-
-			tileVector[((respectedWall.getPosition().y + 1) * 28) + respectedWall.getPosition().x].setColor(sf::Color::Red);
-		}
-		//
-		if (respectedWall.getGlobalBounds().contains({ futurePosRef.x, futurePosRef.y + step })
-			&& checkCellbyPos(respectedWall.getPosition()) == Wall) {
-			return true;
-		}
-		break;
-
-	case Direction::Up:
-		futurePosRef.y = futurePosRef.y - (objectSize.y / 2.f);
-		break;
-	case Direction::Right:
-		futurePosRef.x = futurePosRef.x + (objectSize.x / 2.f);
-		break;
-	case Direction::Left:
-		futurePosRef.x = futurePosRef.x - (objectSize.x / 2.f);
-		break;
-	}
-
-
-	return false;
-}
-
-
-
 //based on neighbors
 void Map::wallTexturer(sf::Vector2i tilePos) {
 	wallTexture.loadFromFile("./Sprites/wall-vertical.png");
@@ -242,6 +163,7 @@ void Map::load() {
 			if (map2[y][x] == cellToChar(Pellet)) {
 				//add to another vector
 				tile.setTexture(pelletTexture);
+				remainingPellet++;
 
 			}
 			else if (map2[y][x] == cellToChar(Wall)) {

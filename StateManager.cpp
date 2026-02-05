@@ -1,8 +1,8 @@
 #include "StateManager.h"
 
 //mapID(1),
-StateManager::StateManager(sf::RenderWindow& window) : window(window),  mainMenu(window, initState, width), game(window, 1), pause(window) {
-	contState = MenuState::MainMenu;
+StateManager::StateManager(sf::RenderWindow& window) : window(window),  mainMenu(window, initState, width), game(window, soundManager, 1), pause(window) {
+    changeInitState(MenuState::MainMenu);
 }
 
 //doesn't change anything in states, just contionus where they left. Use for pause and resume,
@@ -10,30 +10,33 @@ void StateManager::changeContState(MenuState newState) {
     contState = newState;
     initState = contState;
 
+    soundManager.statePlay(contState);
+
+
     switch (contState) {//just printing on terminal
 
     case MenuState::MainMenu:
-        std::cout << "CONT STATE CHANGED: MAIN MENU" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : MAIN MENU" << std::endl;
         break;
 
     case MenuState::MainOptions:
-        std::cout << "CONT STATE CHANGED: MAIN OPTIONS" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : MAIN OPTIONS" << std::endl;
         break;
 
     case MenuState::InGame:
-        std::cout << "CONT STATE CHANGED: IN-GAME" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : IN-GAME" << std::endl;
         break;
 
     case MenuState::Pause:
-        std::cout << "CONT STATE CHANGED: PAUSE" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : PAUSE" << std::endl;
         break;
 
     case MenuState::InGameOptions:
-        std::cout << "CONT STATE CHANGED: IN-GAME OPTIONS" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : IN-GAME OPTIONS" << std::endl;
         break;
 
     case MenuState::Exit:
-        std::cout << "CONT STATE CHANGED: EXIT" << std::endl;
+        std::cout << "[STATE-MANAGER]_CONT : EXIT" << std::endl;
         break;
     }
 }
@@ -43,31 +46,33 @@ void StateManager::changeInitState(MenuState newState) {
 	contState = newState;
     initState = contState;
 
-    switch (contState) {
+    soundManager.statePlay(initState);
+
+    switch (initState) {
 
     case MenuState::MainMenu:
-        std::cout << "INIT STATE CHANGED: MAIN MENU" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : MAIN MENU" << std::endl;
         break;
 
     case MenuState::MainOptions:
-        std::cout << "INIT STATE CHANGED: MAIN OPTIONS" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : MAIN OPTIONS" << std::endl;
         break;
 
     case MenuState::InGame:
-        std::cout << "INIT STATE CHANGED: IN-GAME" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : IN-GAME" << std::endl;
         game.init();
         break;
 
     case MenuState::Pause:
-        std::cout << "INIT STATE CHANGED: PAUSE" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : PAUSE" << std::endl;
         break;
 
     case MenuState::InGameOptions:
-        std::cout << "INIT STATE CHANGED: IN-GAME OPTIONS" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : IN-GAME OPTIONS" << std::endl;
         break;
 
     case MenuState::Exit:
-        std::cout << "INIT STATE CHANGED: EXIT" << std::endl;
+        std::cout << "[STATE-MANAGER]_INIT : EXIT" << std::endl;
         break;
     }
 }
