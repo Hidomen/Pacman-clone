@@ -19,10 +19,13 @@ public:
 
 	sf::Font font; //
 
-	sf::Texture cursor_texture;
-	sf::Sprite menu_cursor;
-	sf::Vector2f cursor_pos;
-	bool cursor_vis;
+	sf::Texture backgroundTexture;
+	sf::Texture cursorTexture;
+
+	sf::Sprite background;
+	sf::Sprite cursor;
+	sf::Vector2f cursorPos;
+	bool cursorVis;
 
 	Button play;
 	Button options;

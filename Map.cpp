@@ -40,7 +40,9 @@ std::string map2[board_cell_height] = {
 Map::Map(int ID, borderList& border) : border(border),
 pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize,tileSize}, {0,0})),
   wallTexture	(sf::Vector2u({tileSize,tileSize}),  false),
- emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize,tileSize}, {0,0}))
+ emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize,tileSize}, {0,0})),
+  testTexture	("./Sprites/wall.png", false, sf::IntRect({tileSize, tileSize}, {0,0}))
+
 
 {
 	mapID = ID;
@@ -123,11 +125,7 @@ char Map::checkCellbyPos(sf::Vector2f position) {
 	return charToCell(map2[tilePos.y][tilePos.x]);
 }
 
-sf::Sprite Map::getVector(sf::Vector2f position) {
-	sf::Vector2i tilePos = posToTile(position);
 
-	return tileVector[tilePos.y * board_cell_width + tilePos.x];
-}
 
 //based on neighbors
 void Map::wallTexturer(sf::Vector2i tilePos) {
@@ -193,5 +191,13 @@ bool Map::isOnGrid(sf::Vector2f position) {
 }
 
 void Map::pelletEaten(sf::Vector2i tile) {
+	//change texture
+	tileVector[tile.y * board_cell_width + tile.x].setTexture(emptyTexture); 
+	//then change array element
 	map2[tile.y][tile.x] = ' ';
+	remainingPellet--;
+}
+
+void Map::clear() {
+
 }

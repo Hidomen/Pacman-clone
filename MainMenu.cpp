@@ -1,9 +1,9 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu(sf::RenderWindow& window, MenuState& state ,float width) : window(window), state(state),
-
-cursor_texture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),
-menu_cursor(cursor_texture),
+backgroundTexture("./Sprites/main-screen-BG.jpeg", false, sf::IntRect({1024,1056}, {0,0})),	//dont construct here
+cursorTexture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),			//dont construct here
+cursor(cursorTexture), background(backgroundTexture),
 
 button_size(75),
 play	(window,	"Play",	{ width / 2 - button_size, 200.f }, button_size),
@@ -12,29 +12,33 @@ exit	(window,	"Exit",	{ width / 2 - button_size, 400.f }, button_size) {
 
 	std::cout << "Main Menu is opened." << std::endl;
 
-	menu_cursor.setScale({ 3,3 });
-	cursor_vis = false;
+	cursor.setScale({ 3,3 });
+	cursorVis = false;
+
+	//background.setPosition({ 0,0 });
+	background.setScale({ static_cast<float>(window.getSize().x) / 1024, static_cast<float>(window.getSize().y) / 1056 });
+	
 }
 
 void MainMenu::update() {
-	menu_cursor.setColor(sf::Color::Transparent);
+	cursor.setColor(sf::Color::Transparent);
 
-	play.text.setFillColor(sf::Color::White);
-	options.text.setFillColor(sf::Color::White);
-	exit.text.setFillColor(sf::Color::White);
+	play.text.setFillColor(sf::Color::Red);
+	options.text.setFillColor(sf::Color::Green);
+	exit.text.setFillColor(bgColor);
 
-	if (cursor_vis) {
-		menu_cursor.setColor(sf::Color::Yellow);
-		menu_cursor.setPosition(cursor_pos);
+	if (cursorVis) {
+		cursor.setColor(sf::Color::Yellow);
+		cursor.setPosition(cursorPos);
 
-		cursor_vis = false;
+		cursorVis = false;
 	}
 
 	if (play.hover()) {
 		play.text.setFillColor(sf::Color::Yellow); // maybe hover func in button.cpp
 
-		cursor_pos = { play.hitbox.getPosition().x - 70.f, play.hitbox.getPosition().y };
-		cursor_vis = true;
+		cursorPos = { play.hitbox.getPosition().x - 70.f, play.hitbox.getPosition().y };
+		cursorVis = true;
 
 		if (play.isClicked()) {
 			state = MenuState::InGame;
@@ -45,8 +49,8 @@ void MainMenu::update() {
 	if (options.hover()) {
 		options.text.setFillColor(sf::Color::Yellow);
 
-		cursor_pos = { options.hitbox.getPosition().x - 70.f, options.hitbox.getPosition().y };
-		cursor_vis = true;
+		cursorPos = { options.hitbox.getPosition().x - 70.f, options.hitbox.getPosition().y };
+		cursorVis = true;
 
 		if (options.isClicked()) {
 			//state = MenuState::MainOptions;
@@ -57,8 +61,8 @@ void MainMenu::update() {
 	if (exit.hover()) {
 		exit.text.setFillColor(sf::Color::Yellow);
 
-		cursor_pos = { exit.hitbox.getPosition().x - 70.f, exit.hitbox.getPosition().y };
-		cursor_vis = true;
+		cursorPos = { exit.hitbox.getPosition().x - 70.f, exit.hitbox.getPosition().y };
+		cursorVis = true;
 
 		if (exit.isClicked()) {
 			state = MenuState::Exit;
@@ -70,8 +74,9 @@ void MainMenu::update() {
 
 void MainMenu::render() {
 	window.clear(sf::Color::Black);
+	window.draw(background);
 
-	window.draw(menu_cursor);
+	window.draw(cursor);
 
 
 	window.draw(play.text);

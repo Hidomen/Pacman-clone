@@ -6,6 +6,8 @@
 
 class Player : public Entity {
 public:
+	sf::Texture Ptexture;
+	sf::Sprite Psprite;
 
 	Player(Map& map, SoundManager& soundManager);
 

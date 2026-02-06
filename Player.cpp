@@ -1,21 +1,22 @@
 ﻿#include "Player.h"
 #include "Map.h"
 
-Player::Player(Map& map, SoundManager& soundManager) : Entity(map, soundManager), nextDirection(entityDirection) {
+Player::Player(Map& map, SoundManager& soundManager) : Entity(map, soundManager), nextDirection(entityDirection), Psprite(Ptexture) {
 	//rectangle_init(player, sf::Vector2f{ width, height }, sf::Vector2f{ grid_size, grid_size });
 	
-	Player::shape.setFillColor(sf::Color::Yellow);
-
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineColor(sf::Color::Green);
+	shape.setOutlineThickness(2.f);
 	
-
 	score = 0;
 	health = 3;
 
-	texture.loadFromFile("Sprites/Pacman.png", false, sf::IntRect({0,0},{24,24}));
-	//texture.update()
-	sprite.setTexture(texture);
-
-	
+	if ( Ptexture.loadFromFile("./Sprites/cursor.png", false, sf::IntRect({ 12,12 }, { 12,12 })) ) {
+		Psprite.setScale({ 2.f,2.f});
+		std::cout << "TEXTURE ADDED" << std::endl;
+		Psprite.setTexture(texture);
+		Psprite.setColor(sf::Color::Yellow);
+	}
 }
 
 void Player::changeDirection(Direction new_direction) {
@@ -42,7 +43,7 @@ void Player::portal() {
 			shape.setPosition({ position.x, map.border.down_pos });
 			break;
 		case Direction::Right:
-			shape.setPosition({ map.border.left_pos + shape.getSize().x, position.y});
+			shape.setPosition({ map.border.left_pos + shape.getSize().x + tileSize, position.y});
 			break;
 		case Direction::Left:
 			shape.setPosition({ map.border.right_pos, position.y });
@@ -61,17 +62,15 @@ void Player::pellet() {
 
 	//pellet eaten
 	if (Pellet == map.checkCellbyPos(position)) {
-		//map'e at bu kısmı
-		map.tileVector[tilePos.y * board_cell_width + tilePos.x].setTexture(map.emptyTexture); //then change array element
 		map.pelletEaten(tilePos);
 
-		soundManager.eatState(true);
+		soundManager.isEating = true;
 		//add up to score
 		score += 10;
 		std::cout << score << std::endl;
 	}
 	else {
-		soundManager.eatState(false);
+		soundManager.isEating = false;
 	}
 }
 
@@ -105,7 +104,6 @@ void Player::checkRotation(){
 //for every frame of moveme
 
 void Player::move() {
-
 	//portal();
 	//if on grid
 	if (map.isOnGrid(position)) {
@@ -156,4 +154,5 @@ void Player::move() {
 	//portal();
 
 	position = shape.getPosition();
+	Psprite.setPosition(position);
 }

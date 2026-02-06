@@ -39,6 +39,8 @@ public:
 	sf::Texture wallTexture;
 	sf::Texture emptyTexture;
 
+	sf::Texture testTexture;
+
 
 	Map(int ID, borderList& border); //loads given ID map 
 
@@ -57,7 +59,7 @@ public:
 	sf::Sprite getVector(sf::Vector2f position);
 
 	void load();
-
+	void clear(); //map cleared
 private:
 	
 };

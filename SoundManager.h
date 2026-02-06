@@ -1,13 +1,11 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include "Globals.h"
-#include <queue>
 
 class SoundManager{
 private:
 
 	sf::SoundBuffer startBuffer;
-	sf::SoundBuffer menuBuffer; //music
 	sf::SoundBuffer intermissionBuffer;
 	
 	sf::SoundBuffer ghostMoveBuffer;
@@ -29,20 +27,19 @@ private:
 	sf::Sound pacmanFruit;
 	sf::Sound pacmanInvincible;
 
-	std::queue<sf::Sound> eatqueue;
 	sf::Time pacmanEat_playTime;
 	sf::Time pacmanEat_durationTime;
 
 public:
 	SoundManager();
 
-	bool eating;
+	bool isEating;
+	float startDuration;
 
 	void stopAll();
 	void pauseAll();
 
 	void statePlay(MenuState state);
-	void eatState(bool isEat);
 	void generalPlay();
 	
 };

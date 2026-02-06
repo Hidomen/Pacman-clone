@@ -1,6 +1,7 @@
 #include "SoundManager.h"
 
-SoundManager::SoundManager() : 
+SoundManager::SoundManager() : isEating(false), startDuration(0.f),
+
 	start(start), menuTheme(), intermission(intermission), 
 	ghostMove(ghostMove), ghostRetreat(ghostRetreat),
 	pacmanMove(pacmanMove), pacmanEat(pacmanEat), pacmanFruit(pacmanFruit), pacmanInvincible(pacmanInvincible)
@@ -8,7 +9,7 @@ SoundManager::SoundManager() :
 	if (!startBuffer.loadFromFile("./Sounds/start.wav")) {
 
 	}
-	if (!menuBuffer.loadFromFile("./Sounds/main-theme.wav")) {
+	if (!menuTheme.openFromFile("./Sounds/main-theme.wav")) {
 
 	}
 	if (!intermissionBuffer.loadFromFile("./Sounds/empty.ogg")) {
@@ -34,8 +35,9 @@ SoundManager::SoundManager() :
 	}
 
 	start.setBuffer(startBuffer);
+	startDuration = startBuffer.getDuration().asSeconds();
 
-	menuTheme.openFromFile("./Sounds/main-theme.wav");
+	
 	menuTheme.setLooping(true);
 
 
@@ -103,28 +105,11 @@ void SoundManager::generalPlay() {
 	pacmanEat_playTime = pacmanEat.getPlayingOffset();
 	pacmanEat_durationTime = pacmanEatBuffer.getDuration();
 
-	std::cout << "OFFSET: " << pacmanEat_playTime.asSeconds() << "DURATION: " << pacmanEat_durationTime.asSeconds() << std::endl;
+	//std::cout << "OFFSET: " << pacmanEat_playTime.asSeconds() << "DURATION: " << pacmanEat_durationTime.asSeconds() << std::endl;
 
+	if ((pacmanEat_playTime == pacmanEat_durationTime || 0 == pacmanEat_playTime.asSeconds()) && isEating) {
 
-	if (pacmanEat_playTime == pacmanEat_durationTime || pacmanEat_playTime.asSeconds() == 0) {
-		pacmanEat.stop();
-
-	}
-	else {
-		return;
-	}
-
-	if (eating) {
-		pacmanEat.play();
-	}
-}
-
-void SoundManager::eatState(bool isEat) {
-	if (isEat) {
-		eating = true;
-	}
-	else {
-		eating = false;
+			pacmanEat.play();
 	}
 }
 

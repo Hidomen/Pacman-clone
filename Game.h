@@ -5,7 +5,7 @@
 #include "Player.h"
 
 #include "Ghost.h"
-
+#include "Globals.h"
 
 
 
@@ -39,6 +39,8 @@ public:
 	sf::VertexArray gridLines;
 
 	sf::Font font;
+	float scoreSize;
+
 	sf::Text score;
 	sf::Text highScore;
 
