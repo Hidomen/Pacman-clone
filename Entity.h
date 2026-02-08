@@ -18,6 +18,8 @@ protected:
 	Map& map;
 	SoundManager& soundManager;
 
+	
+
 public:
 	Entity(Map& map, SoundManager& soundManager);
 	

@@ -8,13 +8,15 @@
 #include "Globals.h"
 
 
-
 class Game{
 public:
 	sf::RenderWindow& window; 
-	sf::RectangleShape arena;
-
 	SoundManager& soundManager;
+	sf::Font& font;
+
+	Game(sf::RenderWindow& window, SoundManager& soundManager, sf::Font& font, int mapID);
+
+	sf::RectangleShape arena;
 
 	sf::Clock delayClock;
 	sf::Clock timerClock; //cant start with 0
@@ -32,13 +34,8 @@ public:
 	Ghost ghost1;
 	Ghost ghost2;
 
-
-	Game(sf::RenderWindow& window, SoundManager& soundManager, int mapID);
-	
-
 	sf::VertexArray gridLines;
 
-	sf::Font font;
 	float scoreSize;
 
 	sf::Text score;

@@ -1,7 +1,10 @@
 ﻿#include "Player.h"
 #include "Map.h"
 
-Player::Player(Map& map, SoundManager& soundManager) : Entity(map, soundManager), nextDirection(entityDirection), Psprite(Ptexture) {
+
+//window added for just debug
+Player::Player(Map& map, SoundManager& soundManager, sf::RenderWindow& window) : window(window), Entity(map, soundManager), nextDirection(entityDirection)
+{
 	//rectangle_init(player, sf::Vector2f{ width, height }, sf::Vector2f{ grid_size, grid_size });
 	
 	shape.setFillColor(sf::Color::Transparent);
@@ -11,12 +14,6 @@ Player::Player(Map& map, SoundManager& soundManager) : Entity(map, soundManager)
 	score = 0;
 	health = 3;
 
-	if ( Ptexture.loadFromFile("./Sprites/cursor.png", false, sf::IntRect({ 12,12 }, { 12,12 })) ) {
-		Psprite.setScale({ 2.f,2.f});
-		std::cout << "TEXTURE ADDED" << std::endl;
-		Psprite.setTexture(texture);
-		Psprite.setColor(sf::Color::Yellow);
-	}
 }
 
 void Player::changeDirection(Direction new_direction) {
@@ -32,7 +29,7 @@ void Player::portal() {
 	//out of border
 	if (position.x >= map.border.right_pos - shape.getSize().x ||
 		position.x <= map.border.left_pos  + shape.getSize().x ||
-		position.y >= map.border.down_pos  - shape.getSize().y ||
+		position.y >= map.border.down_pos  + shape.getSize().y ||
 		position.y <= map.border.up_pos	   + shape.getSize().y ) {
 
 		switch (entityDirection){
@@ -46,7 +43,7 @@ void Player::portal() {
 			shape.setPosition({ map.border.left_pos + shape.getSize().x + tileSize, position.y});
 			break;
 		case Direction::Left:
-			shape.setPosition({ map.border.right_pos, position.y });
+			shape.setPosition({ map.border.right_pos - shape.getSize().x, position.y });
 			break;
 		}
 
@@ -56,7 +53,7 @@ void Player::portal() {
 
 //only when on grid
 void Player::pellet() {
-	//if()
+
 	sf::Vector2i tilePos = map.posToTile(position);
 	sf::Sprite cell = map.tileVector[tilePos.y * board_cell_width + tilePos.x];
 
@@ -67,7 +64,6 @@ void Player::pellet() {
 		soundManager.isEating = true;
 		//add up to score
 		score += 10;
-		std::cout << score << std::endl;
 	}
 	else {
 		soundManager.isEating = false;
@@ -98,38 +94,35 @@ void Player::checkRotation(){
 	}
 }
 
-//sf::Sprite nextCell = map.tileVector[position.y * board_cell_width + position.x];
 
-
-//for every frame of moveme
-
+//for every frame of movement
 void Player::move() {
-	//portal();
+
 	//if on grid
 	if (map.isOnGrid(position)) {
-		//check rotation
+		//portal();
+
 		pellet();
 		checkRotation();
 
 		//check next wall collision -> return
-		sf::Vector2f nextPosForCollision;
 
 		switch (entityDirection){
 
 		case Direction::Down: // change x and y
-			nextPosForCollision = { position.x, position.y + tileSize };
+			targetPosition = { position.x, position.y + tileSize };
 			break;
 		case Direction::Up:
-			nextPosForCollision = { position.x, position.y - tileSize };
+			targetPosition = { position.x, position.y - tileSize };
 			break;
 		case Direction::Right:
-			nextPosForCollision = { position.x + tileSize, position.y };
+			targetPosition = { position.x + tileSize, position.y };
 			break;
 		case Direction::Left:
-			nextPosForCollision = { position.x - tileSize, position.y };
+			targetPosition = { position.x - tileSize, position.y };
 			break;
 		}
-		if (Wall == map.checkCellbyPos(nextPosForCollision)) {
+		if (Wall == map.checkCellbyPos(targetPosition)) {
 			return;
 		}
 	}
@@ -154,5 +147,12 @@ void Player::move() {
 	//portal();
 
 	position = shape.getPosition();
-	Psprite.setPosition(position);
+	//Psprite.setPosition(position);
+}
+
+void Player::update() {
+	
+}
+
+void Player::render() {
 }

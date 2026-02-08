@@ -3,18 +3,16 @@
 
 
 
-Game::Game(sf::RenderWindow& window, SoundManager& soundManager, int mapID) : window(window), soundManager(soundManager), font(),
-map(mapID, border), player(map, soundManager),  ghost1(map, soundManager), ghost2(map, soundManager),
+Game::Game(sf::RenderWindow& window, SoundManager& soundManager, sf::Font& font, int mapID) : window(window), soundManager(soundManager), font(font),
+map(mapID, border), player(map, soundManager, window),  ghost1(map, soundManager), ghost2(map, soundManager),
 score(font), highScore(font)
 {
-    if (font.openFromFile("./Fonts/alagard.ttf")) {
-        std::cout << "FONT ADDED." << std::endl;
-    }
+
 
     delayTime = 0.f;
     timerTime = 0.f;
 
-    scoreSize = ((window.getSize().x / 4.f) - 20);
+    //scoreSize = ((window.getSize().x / 4.f) - 20);
 
     //never changes
     //gridLines = drawGrid(window, tileSize);
@@ -39,6 +37,7 @@ score(font), highScore(font)
     highScore.setFillColor(sf::Color::Black);
 
     //map = new Map(1, border);
+
 }
 
 
@@ -87,7 +86,8 @@ void Game::init() {
 
     player.position = { tileSize * 16, tileSize * 25 }; //start point
     player.shape.setPosition(sf::Vector2f(player.position));
-    player.sprite.setPosition(sf::Vector2f(player.position));
+    //player.Psprite.setPosition(sf::Vector2f(player.position));
+    
 
     player.score = 0;
 
@@ -99,6 +99,10 @@ void Game::init() {
     map.load();
 
     std::cout << "Game Initilized :: Took, " << timerClock.getElapsedTime().asSeconds() << "s ." << std::endl;
+
+    //player.Psprite.setTexture(map.pelletTexture);
+    
+
 }
 
 void Game::update() {
@@ -112,7 +116,7 @@ void Game::update() {
 	inputSystem();
     //GHOST MOVEMENT
 
-    score.setString("SCORE: " + player.score);
+    score.setString("SCORE: " + std::to_string(player.score));
     score.setPosition({ border.left_pos, 0 });
 
     if (0 == map.remainingPellet) {
@@ -123,6 +127,8 @@ void Game::update() {
                 map.tileVector[i].setTexture(map.testTexture);
         }
     }
+
+    
 }
 
 void Game::render() {
@@ -134,11 +140,12 @@ void Game::render() {
         window.draw(tile);
     }
     
-    window.draw(ghost1.shape);
-    window.draw(ghost2.shape);
+    //window.draw(ghost1.shape);
+    //window.draw(ghost2.shape);
+
+    window.draw(ghost1.sprite);
 
     window.draw(player.shape);
-    window.draw(player.sprite);
 
     //window.draw(gridLines);
 

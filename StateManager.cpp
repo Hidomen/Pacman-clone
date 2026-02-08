@@ -1,7 +1,11 @@
 #include "StateManager.h"
 
 //mapID(1),
-StateManager::StateManager(sf::RenderWindow& window) : window(window),  mainMenu(window, initState, width), game(window, soundManager, 1), pause(window) {
+StateManager::StateManager(sf::RenderWindow& window, sf::Font& font) : window(window), font(font), 
+mainMenu(window, initState, font), 
+game(window, soundManager, font, 1), 
+pause(window, font) {
+
     changeInitState(MenuState::MainMenu);
 }
 
@@ -60,6 +64,7 @@ void StateManager::changeInitState(MenuState newState) {
 
     case MenuState::InGame:
         std::cout << "[STATE-MANAGER]_INIT : IN-GAME" << std::endl;
+        //game = Game(window, soundManager, 1);
         game.init();
         break;
 

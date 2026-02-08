@@ -6,14 +6,13 @@
 
 
 class Engine{
-	
-
 public:
+	sf::Font font;
+
 	Engine();
 
 	void run();
 	int mapID;
-
 
 private:
 	
@@ -22,6 +21,8 @@ private:
 	//int mapID;
 	StateManager stateManager;
 	//
+
+
 	void handleEvents();
 	void render();
 };

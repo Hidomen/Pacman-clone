@@ -7,17 +7,15 @@
 #include "Globals.h"
 
 
-class MainMenu
-{
+class MainMenu {
 public:
 	sf::RenderWindow& window;
 	MenuState& state;
-	MainMenu(sf::RenderWindow& window, MenuState& state, float width);
+	sf::Font& font;
 
+	MainMenu(sf::RenderWindow& window, MenuState& state, sf::Font& font);
 
-	int button_size;
-
-	sf::Font font; //
+	int textSize;
 
 	sf::Texture backgroundTexture;
 	sf::Texture cursorTexture;
@@ -31,10 +29,8 @@ public:
 	Button options;
 	Button exit;
 	
-
 	//std::vector<sf::Text> buttons;
 	//
-	
 	void update();
 	void render();
 };

@@ -6,16 +6,15 @@
 
 class Player : public Entity {
 public:
-	sf::Texture Ptexture;
-	sf::Sprite Psprite;
+	sf::RenderWindow& window;
 
-	Player(Map& map, SoundManager& soundManager);
+	Player(Map& map, SoundManager& soundManager, sf::RenderWindow& window);
 
 	int score; //high-score?
 	int health; //3 for starting
 
-
 	void update();
+	void render();
 
 	void move();
 

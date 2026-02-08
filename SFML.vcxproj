@@ -24,6 +24,7 @@
     <ProjectGuid>{7eb4e10d-b126-485f-a6d3-55d7afe05489}</ProjectGuid>
     <RootNamespace>SFML</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Pacman</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,7 +140,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SFML.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="Test.cpp" />

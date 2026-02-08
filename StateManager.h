@@ -14,8 +14,9 @@
 class StateManager{
 public:
 	sf::RenderWindow& window;
+	sf::Font& font;
 
-	StateManager(sf::RenderWindow& window);
+	StateManager(sf::RenderWindow& window, sf::Font& font);
 
 	SoundManager soundManager;
 

@@ -7,8 +7,9 @@ class Pause
 {
 public:
 	sf::RenderWindow& window;
+	sf::Font& font;
 
-	Pause(sf::RenderWindow& window);
+	Pause(sf::RenderWindow& window, sf::Font& font);
 
 	Button options;
 	Button mainMenu;

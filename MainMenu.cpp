@@ -1,23 +1,23 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(sf::RenderWindow& window, MenuState& state ,float width) : window(window), state(state),
+MainMenu::MainMenu(sf::RenderWindow& window, MenuState& state, sf::Font& font) : window(window), state(state), font(font),
+
 backgroundTexture("./Sprites/main-screen-BG.jpeg", false, sf::IntRect({1024,1056}, {0,0})),	//dont construct here
-cursorTexture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),			//dont construct here
+cursorTexture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),		//dont construct here
+
 cursor(cursorTexture), background(backgroundTexture),
 
-button_size(75),
-play	(window,	"Play",	{ width / 2 - button_size, 200.f }, button_size),
-options	(window, "Options",	{ width / 2 - button_size, 300.f }, button_size), 
-exit	(window,	"Exit",	{ width / 2 - button_size, 400.f }, button_size) {
+textSize(75),
+play	(window, font,	"Play",		{ static_cast<float>(window.getSize().x / 2 - textSize), 200.f }, textSize),
+options	(window, font,	"Options",	{ static_cast<float>(window.getSize().x / 2 - textSize), 300.f }, textSize),
+exit	(window, font,	"Exit",		{ static_cast<float>(window.getSize().x / 2 - textSize), 400.f }, textSize) {
 
 	std::cout << "Main Menu is opened." << std::endl;
 
 	cursor.setScale({ 3,3 });
 	cursorVis = false;
 
-	//background.setPosition({ 0,0 });
 	background.setScale({ static_cast<float>(window.getSize().x) / 1024, static_cast<float>(window.getSize().y) / 1056 });
-	
 }
 
 void MainMenu::update() {
@@ -34,10 +34,13 @@ void MainMenu::update() {
 		cursorVis = false;
 	}
 
+	//connect them and check in one loop
 	if (play.hover()) {
 		play.text.setFillColor(sf::Color::Yellow); // maybe hover func in button.cpp
 
-		cursorPos = { play.hitbox.getPosition().x - 70.f, play.hitbox.getPosition().y };
+		cursorPos = { play.hitbox.getPosition().x - cursor.getGlobalBounds().size.x, 
+					  play.hitbox.getPosition().y + ( play.text.getCharacterSize() - cursor.getGlobalBounds().size.y)  / 2};
+
 		cursorVis = true;
 
 		if (play.isClicked()) {
@@ -49,7 +52,8 @@ void MainMenu::update() {
 	if (options.hover()) {
 		options.text.setFillColor(sf::Color::Yellow);
 
-		cursorPos = { options.hitbox.getPosition().x - 70.f, options.hitbox.getPosition().y };
+		cursorPos = { options.hitbox.getPosition().x - cursor.getGlobalBounds().size.x,
+					  options.hitbox.getPosition().y + ( options.text.getCharacterSize() - cursor.getGlobalBounds().size.y ) / 2 };
 		cursorVis = true;
 
 		if (options.isClicked()) {
@@ -61,7 +65,8 @@ void MainMenu::update() {
 	if (exit.hover()) {
 		exit.text.setFillColor(sf::Color::Yellow);
 
-		cursorPos = { exit.hitbox.getPosition().x - 70.f, exit.hitbox.getPosition().y };
+		cursorPos = { exit.hitbox.getPosition().x - cursor.getGlobalBounds().size.x, 
+					  exit.hitbox.getPosition().y + ( exit.text.getCharacterSize() - cursor.getGlobalBounds().size.y ) / 2};
 		cursorVis = true;
 
 		if (exit.isClicked()) {
@@ -78,15 +83,13 @@ void MainMenu::render() {
 
 	window.draw(cursor);
 
-
 	window.draw(play.text);
 	window.draw(options.text);
 	window.draw(exit.text);
 
-	//window.draw(play.hitbox);
-	//window.draw(options.hitbox);
-	//window.draw(exit.hitbox);
+	window.draw(play.hitbox);
+	window.draw(options.hitbox);
+	window.draw(exit.hitbox);
 
 	window.display();
-
 }

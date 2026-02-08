@@ -82,6 +82,7 @@ void SoundManager::statePlay(MenuState state) {
 	switch (state){
 
 	case MenuState::MainMenu:
+		start.stop();
 		menuTheme.play();
 		break;
 	case MenuState::MainOptions:

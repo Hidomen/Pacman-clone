@@ -9,10 +9,13 @@ Engine::Engine()
             static_cast<unsigned>(height)
         } },
         "Pacman by Hidomen", sf::Style::Default
-    ), stateManager(window), mapID(0)
+    ), stateManager(window, font), mapID(0)
 {
     window.setFramerateLimit(144); //does it have to be limited?
 
+    if (!font.openFromFile("./Fonts/alagard.ttf")) {
+        std::cout << "[ENGINE] : font couldnt loaded" << std::endl;
+    }
 }
 
 void Engine::handleEvents() {

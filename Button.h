@@ -3,16 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-
-
 class Button
 {
 public:
 	sf::RenderWindow& window;
-	Button(sf::RenderWindow& window, std::string inputText, sf::Vector2f position, int button_size);
-
-	float text_size;
-	sf::Font font;
+	sf::Font& font;
+	Button(sf::RenderWindow& window, sf::Font& font, std::string inputText, sf::Vector2f position, int textSize);
 
 
 	sf::Text text;
@@ -24,4 +20,3 @@ public:
 	bool isClicked();
 
 };
-
