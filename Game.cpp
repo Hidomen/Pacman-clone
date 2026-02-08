@@ -4,7 +4,8 @@
 
 
 Game::Game(sf::RenderWindow& window, SoundManager& soundManager, sf::Font& font, int mapID) : window(window), soundManager(soundManager), font(font),
-map(mapID, border), player(map, soundManager, window),  ghost1(map, soundManager), ghost2(map, soundManager),
+map(mapID, border), player(map, soundManager, window),  
+ghost1(map, soundManager), ghost2(map, soundManager), ghost3(map, soundManager), ghost4(map, soundManager),
 score(font), highScore(font)
 {
 
@@ -14,9 +15,11 @@ score(font), highScore(font)
 
     //scoreSize = ((window.getSize().x / 4.f) - 20);
 
-    //never changes
-    //gridLines = drawGrid(window, tileSize);
-
+    entityList.push_back(&player);
+    entityList.push_back(&ghost1);
+    entityList.push_back(&ghost2);
+    entityList.push_back(&ghost3);
+    entityList.push_back(&ghost4);
 
     arena.setSize({ tileSize * (board_cell_width), tileSize * (board_cell_height) });
 
@@ -73,7 +76,12 @@ void Game::inputSystem() {
 
     //very first start of the game
     if (timerTime >= soundManager.startDuration) {
-        player.move();
+        player.move(entityList);
+
+        ghost1.moveSet(entityList);
+        ghost2.moveSet(entityList);
+        ghost3.moveSet(entityList);
+        ghost4.moveSet(entityList);
 
         delayClock.restart();
     }
@@ -85,9 +93,20 @@ void Game::init() {
     moveSpeed = .03f; //smaller it gets, faster the player moves
 
     player.position = { tileSize * 16, tileSize * 25 }; //start point
-    player.shape.setPosition(sf::Vector2f(player.position));
-    //player.Psprite.setPosition(sf::Vector2f(player.position));
-    
+    player.shape.setPosition(player.position);
+
+
+    ghost1.position = { tileSize * 3, tileSize * 3 }; //start point
+    ghost1.shape.setPosition(sf::Vector2f(ghost1.position));
+
+    ghost2.position = { tileSize * 9, tileSize * 3 };
+    ghost2.shape.setPosition(ghost2.position);
+
+    ghost3.position = { tileSize * 7, tileSize * 3 };
+    ghost3.shape.setPosition(ghost3.position);
+
+    ghost4.position = { tileSize * 5, tileSize * 3 };
+    ghost4.shape.setPosition(ghost4.position);
 
     player.score = 0;
 
@@ -99,10 +118,6 @@ void Game::init() {
     map.load();
 
     std::cout << "Game Initilized :: Took, " << timerClock.getElapsedTime().asSeconds() << "s ." << std::endl;
-
-    //player.Psprite.setTexture(map.pelletTexture);
-    
-
 }
 
 void Game::update() {
@@ -113,8 +128,7 @@ void Game::update() {
 
     //std::cout << "TOTAL TIME: " << timer_time << std::endl;
 
-	inputSystem();
-    //GHOST MOVEMENT
+	inputSystem(); 
 
     score.setString("SCORE: " + std::to_string(player.score));
     score.setPosition({ border.left_pos, 0 });
@@ -127,8 +141,6 @@ void Game::update() {
                 map.tileVector[i].setTexture(map.testTexture);
         }
     }
-
-    
 }
 
 void Game::render() {
@@ -140,10 +152,10 @@ void Game::render() {
         window.draw(tile);
     }
     
-    //window.draw(ghost1.shape);
-    //window.draw(ghost2.shape);
-
-    window.draw(ghost1.sprite);
+    window.draw(ghost1.shape);
+    window.draw(ghost2.shape);
+    window.draw(ghost3.shape);
+    window.draw(ghost4.shape);
 
     window.draw(player.shape);
 

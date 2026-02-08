@@ -12,6 +12,8 @@ public:
 	sf::Vector2f targetPosition;
 	bool isEnergised;
 
+	void moveSet(std::vector<Entity *>& entityList);
+
 	void update();
 };
 

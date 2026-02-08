@@ -16,14 +16,9 @@ public:
 	void update();
 	void render();
 
-	void move();
+	
 
-	Direction nextDirection;
-
-	void pellet();
-	void portal();
-	void changeDirection(Direction direction);
-	void checkRotation();
+	
 	//void portal(); //if its out of boundry then tp the opposite side
 };
 

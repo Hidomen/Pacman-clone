@@ -12,19 +12,27 @@ static float width = tileSize * (board_cell_width + 4);
 static float height = tileSize * (board_cell_height + 4);
 //
 
+enum class EntityType {Player, Ghost};
 
-class Entity{
+class Entity {
+
 protected:
 	Map& map;
 	SoundManager& soundManager;
 
-	
-
 public:
 	Entity(Map& map, SoundManager& soundManager);
+
+	EntityType entityType;
+
+	
+
+	int score;
 	
 	sf::Vector2f position;
+	sf::Vector2f nextStep;
 	sf::Vector2f targetPosition;
+
 
 	sf::Vector2i lastTilePos;
 
@@ -34,6 +42,14 @@ public:
 	sf::Sprite sprite;
 	sf::RectangleShape shape;
 
+	void move(std::vector<Entity *>& entityList);
+
+	Direction nextDirection;
+
+	void pellet();
+	void portal();
+	void changeDirection(Direction direction);
+	void checkRotation();
 //private:
 
 	//void move();

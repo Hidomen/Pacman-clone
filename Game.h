@@ -31,8 +31,9 @@ public:
 
 	Player player;
 
-	Ghost ghost1;
-	Ghost ghost2;
+	Ghost ghost1, ghost2, ghost3, ghost4;
+
+	std::vector<Entity *> entityList;
 
 	sf::VertexArray gridLines;
 
