@@ -8,8 +8,6 @@ map(mapID, border), player(map, soundManager, window),
 ghost1(map, soundManager), ghost2(map, soundManager), ghost3(map, soundManager), ghost4(map, soundManager),
 score(font), highScore(font)
 {
-
-
     delayTime = 0.f;
     timerTime = 0.f;
 
@@ -38,6 +36,12 @@ score(font), highScore(font)
 
     highScore.setCharacterSize(40);
     highScore.setFillColor(sf::Color::Black);
+
+    highScore.setString("HIGHSCORE: 0000");
+
+    highScore.setPosition({ border.right_pos - highScore.getGlobalBounds().size.x, 0 }); //sağa yatık
+    //highScore.setPosition({ score.getGlobalBounds().size.x + 100, 0 }); // sola yatık
+
 
     //map = new Map(1, border);
 
@@ -76,14 +80,51 @@ void Game::inputSystem() {
 
     //very first start of the game
     if (timerTime >= soundManager.startDuration) {
-        player.move(entityList);
-
-        ghost1.moveSet(entityList);
-        ghost2.moveSet(entityList);
-        ghost3.moveSet(entityList);
-        ghost4.moveSet(entityList);
+        
+        movement();
 
         delayClock.restart();
+    }
+}
+
+bool Game::checkEntityCollision(Entity entity) {
+    //return false; //for debug
+
+    for (int i = 0; i < entityList.size(); i++) {
+        //if (entityList[i]->shape.getGlobalBounds().contains(nextStep)) {
+        if (entityList[i]->position == entity.nextStep) {
+            std::cout << "COLLİSİONNN" << std::endl;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Game::movement() {
+    for (auto e : entityList) {
+        if (EntityType::Ghost == e->entityType) {
+            e->changeDirection(static_cast<Direction>(rand() % 4));
+        }
+    }
+
+    for (auto e : entityList) {
+        e->computeNextPosition();
+    }
+
+    for (auto e : entityList) {
+        if (!checkEntityCollision(*e)) { // true -> collides
+            
+            e->applyMovement();
+        }
+        else {
+            e->applyMovement();
+
+            if (EntityType::Player == e->entityType) {
+                gameOver();
+            }
+        }
     }
 }
 
@@ -92,30 +133,10 @@ void Game::init() {
 
     moveSpeed = .03f; //smaller it gets, faster the player moves
 
-    player.position = { tileSize * 16, tileSize * 25 }; //start point
-    player.shape.setPosition(player.position);
-
-
-    ghost1.position = { tileSize * 3, tileSize * 3 }; //start point
-    ghost1.shape.setPosition(sf::Vector2f(ghost1.position));
-
-    ghost2.position = { tileSize * 9, tileSize * 3 };
-    ghost2.shape.setPosition(ghost2.position);
-
-    ghost3.position = { tileSize * 7, tileSize * 3 };
-    ghost3.shape.setPosition(ghost3.position);
-
-    ghost4.position = { tileSize * 5, tileSize * 3 };
-    ghost4.shape.setPosition(ghost4.position);
+    setupEntities();
+    setupMap();
 
     player.score = 0;
-
-    highScore.setString("HIGHSCORE: 0000");
-
-    highScore.setPosition({ border.right_pos - highScore.getGlobalBounds().size.x, 0 }); //sağa yatık
-    //highScore.setPosition({ score.getGlobalBounds().size.x + 100, 0 }); // sola yatık
-
-    map.load();
 
     std::cout << "Game Initilized :: Took, " << timerClock.getElapsedTime().asSeconds() << "s ." << std::endl;
 }
@@ -126,12 +147,13 @@ void Game::update() {
     timerTime = timerClock.getElapsedTime().asSeconds();
     delayTime = delayClock.getElapsedTime().asSeconds();
 
-    //std::cout << "TOTAL TIME: " << timer_time << std::endl;
-
-	inputSystem(); 
+    //std::cout << "TOTAL TIME: " << timerTime << std::endl;
+	
+    inputSystem(); 
 
     score.setString("SCORE: " + std::to_string(player.score));
     score.setPosition({ border.left_pos, 0 });
+
 
     if (0 == map.remainingPellet) {
         std::cout << "[GAME] : MAP CLEARED" << std::endl;
@@ -141,6 +163,48 @@ void Game::update() {
                 map.tileVector[i].setTexture(map.testTexture);
         }
     }
+}
+
+void Game::setupMap() {
+    map.tileVector.clear();
+    map.load();
+}
+
+void Game::setupEntities() {
+    
+    timerClock.restart();
+    delayClock.restart();
+
+    soundManager.statePlay(MenuState::InGame);
+
+    player.position = { tileSize * 16, tileSize * 25 }; //start point
+    player.shape.setPosition(player.position);
+
+
+    ghost1.position = { tileSize * 3, tileSize * 3 }; //start point
+    ghost1.shape.setPosition(sf::Vector2f(ghost1.position));
+    ghost1.targetPosition = ghost1.position;
+
+    ghost2.position = { tileSize * 9, tileSize * 3 };
+    ghost2.shape.setPosition(ghost2.position);
+    ghost2.targetPosition = ghost2.position;
+
+    ghost3.position = { tileSize * 7, tileSize * 3 };
+    ghost3.shape.setPosition(ghost3.position);
+    ghost3.targetPosition = ghost3.position;
+
+    ghost4.position = { tileSize * 5, tileSize * 3 };
+    ghost4.shape.setPosition(ghost4.position);
+    ghost4.targetPosition = ghost4.position;
+
+}
+
+void Game::gameOver() {
+    if (0 == player.health) {
+        //ITS OVER
+    }
+    //otherwise
+    setupEntities();
 }
 
 void Game::render() {

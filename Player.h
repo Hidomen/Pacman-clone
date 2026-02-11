@@ -10,7 +10,7 @@ public:
 
 	Player(Map& map, SoundManager& soundManager, sf::RenderWindow& window);
 
-	int score; //high-score?
+	//high-score?
 	int health; //3 for starting
 
 	void update();

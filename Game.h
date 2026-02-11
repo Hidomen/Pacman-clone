@@ -44,8 +44,15 @@ public:
 
 	void inputSystem();
 
+	bool checkEntityCollision(Entity entity);
+	void movement();
+
 	void init();
 	void update();
 	void render();
+
+	void gameOver();
+	void setupEntities();
+	void setupMap();
 };
 

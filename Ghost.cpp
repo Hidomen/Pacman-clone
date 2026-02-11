@@ -26,5 +26,5 @@ void Ghost::moveSet(std::vector<Entity *>& entityList) {
 	int randDir = rand() % 4;
 	nextDirection = static_cast<Direction>(randDir);
 
-	move(entityList);
+	//move();
 }

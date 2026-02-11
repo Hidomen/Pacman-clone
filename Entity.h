@@ -25,8 +25,6 @@ public:
 
 	EntityType entityType;
 
-	
-
 	int score;
 	
 	sf::Vector2f position;
@@ -42,7 +40,6 @@ public:
 	sf::Sprite sprite;
 	sf::RectangleShape shape;
 
-	void move(std::vector<Entity *>& entityList);
 
 	Direction nextDirection;
 
@@ -50,6 +47,9 @@ public:
 	void portal();
 	void changeDirection(Direction direction);
 	void checkRotation();
+
+	void computeNextPosition();
+	void applyMovement();
 //private:
 
 	//void move();

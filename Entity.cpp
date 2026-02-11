@@ -86,34 +86,10 @@ void Entity::checkRotation() {
 	}
 }
 
-
 //for every frame of movement
-void Entity::move(std::vector<Entity *>& entityList) {
+void Entity::applyMovement() {
 
 	shape.setPosition(position);
-
-	if (map.isOnGrid(position)) {
-		checkRotation();
-	}
-
-	switch (entityDirection) {
-
-	case Direction::Down:
-		nextStep = { position.x, position.y + step };
-		break;
-	case Direction::Up:
-		nextStep = { position.x, position.y - step };
-		break;
-	case Direction::Right:
-		nextStep = { position.x + step, position.y };
-		break;
-	case Direction::Left:
-		nextStep = { position.x - step, position.y };
-		break;
-	}
-
-	
-
 
 	//if on grid
 	if (map.isOnGrid(position)) {
@@ -146,16 +122,34 @@ void Entity::move(std::vector<Entity *>& entityList) {
 		
 	}
 
-	for (int i = 0; i < entityList.size(); i++) {
-		//if (entityList[i]->shape.getGlobalBounds().contains(nextStep)) {
-		if (entityList[i]->position == nextStep) {
-			std::cout << "COLLİSİONNN" << std::endl;
-
-			return;
-		}
-	}
-
+	//in game
+	
 	position = nextStep;
 
 	//portal();
+}
+
+void Entity::computeNextPosition() {
+	nextStep = position;
+	shape.setPosition(position);
+
+	if (map.isOnGrid(position)) {
+		checkRotation();
+	}
+
+	switch (entityDirection) {
+
+	case Direction::Down:
+		nextStep = { position.x, position.y + step };
+		break;
+	case Direction::Up:
+		nextStep = { position.x, position.y - step };
+		break;
+	case Direction::Right:
+		nextStep = { position.x + step, position.y };
+		break;
+	case Direction::Left:
+		nextStep = { position.x - step, position.y };
+		break;
+	}
 }
