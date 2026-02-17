@@ -3,8 +3,8 @@
 
 
 Entity::Entity(Map& map, SoundManager& soundManager) : entityDirection(Direction::Left), 
-map(map), soundManager(soundManager), 
-sprite(texture), nextDirection(entityDirection) 
+map(map), soundManager(soundManager),
+nextDirection(entityDirection)
 {
 	
 	shape.setSize({ 24,24});
@@ -43,24 +43,7 @@ void Entity::portal() {
 
 }
 
-//only when on grid, and check if its player
-void Entity::pellet() {
 
-	sf::Vector2i tilePos = map.posToTile(position);
-	sf::Sprite cell = map.tileVector[tilePos.y * board_cell_width + tilePos.x];
-
-	//pellet eaten
-	if (Pellet == map.checkCellbyPos(position)) {
-		map.pelletEaten(tilePos);
-
-		soundManager.isEating = true;
-		//add up to score
-		score += 10;
-	}
-	else {
-		soundManager.isEating = false;
-	}
-}
 
 void Entity::checkRotation() {
 	sf::Vector2f nextPos;
@@ -94,10 +77,6 @@ void Entity::applyMovement() {
 	//if on grid
 	if (map.isOnGrid(position)) {
 		//portal();
-
-		if (EntityType::Player == entityType) {
-			pellet();
-		}
 
 		switch (entityDirection) {
 

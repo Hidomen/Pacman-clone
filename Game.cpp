@@ -6,6 +6,7 @@
 Game::Game(sf::RenderWindow& window, SoundManager& soundManager, sf::Font& font, int mapID) : window(window), soundManager(soundManager), font(font),
 map(mapID, border), player(map, soundManager, window),  
 ghost1(map, soundManager), ghost2(map, soundManager), ghost3(map, soundManager), ghost4(map, soundManager),
+playerSprite(window, EntityType::Player),
 score(font), highScore(font)
 {
     delayTime = 0.f;
@@ -21,7 +22,7 @@ score(font), highScore(font)
 
     arena.setSize({ tileSize * (board_cell_width), tileSize * (board_cell_height) });
 
-    arena.setPosition({ width / 2.f, height / 2.f });
+    arena.setPosition({ window_width / 2.f, window_height / 2.f });
     arena.setOrigin(arena.getGeometricCenter());
 
     arena.setFillColor(sf::Color::Black);
@@ -110,6 +111,9 @@ void Game::movement() {
     }
 
     for (auto e : entityList) {
+        if (EntityType::Player == e->entityType && map.isOnGrid(e->position)) {
+            player.pellet();
+        }
         e->computeNextPosition();
     }
 
@@ -163,6 +167,8 @@ void Game::update() {
                 map.tileVector[i].setTexture(map.testTexture);
         }
     }
+
+    playerSprite.sprite.setPosition(player.position);
 }
 
 void Game::setupMap() {
@@ -224,6 +230,7 @@ void Game::render() {
     window.draw(player.shape);
 
     //window.draw(gridLines);
+    playerSprite.render();
 
     window.draw(score);
     window.draw(highScore);

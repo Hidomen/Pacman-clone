@@ -2,19 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Globals.h"
+#include "Config.h"
 
-
-
-
-static const int board_cell_height = 31;
-static const int board_cell_width = 28;
-
-
-enum CellType {Empty, Wall, Pellet, Portal, Door, Enrg, Out};
+enum CellType { Empty, Wall, Pellet, Portal, Door, Enrg, Out };
 
 enum class WallDirection { Horizontal, Vertical, TopLeftCorner, TopRightCorner, BottomLeftCorner, BottomRightCorner };
-
 
 struct borderList {
 
@@ -24,8 +16,6 @@ struct borderList {
 	float left_pos; //
 
 };
-
-
 
 class Map{
 public:

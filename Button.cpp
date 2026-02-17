@@ -13,9 +13,10 @@ text(font, inputText, textSize)
 	hitbox.setPosition({position.x, position.y + 10}); //ortala
 
 	//for debugging
-	hitbox.setFillColor(sf::Color::Transparent);
-	hitbox.setOutlineThickness(5.f);
-	hitbox.setOutlineColor(sf::Color::Green);
+	
+	//hitbox.setFillColor(sf::Color::Transparent);
+	//hitbox.setOutlineThickness(5.f);
+	//hitbox.setOutlineColor(sf::Color::Green);
 }
 
 bool Button::hover() {

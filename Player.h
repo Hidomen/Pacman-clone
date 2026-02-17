@@ -11,13 +11,16 @@ public:
 	Player(Map& map, SoundManager& soundManager, sf::RenderWindow& window);
 
 	//high-score?
+	int score;
+
 	int health; //3 for starting
 
+
 	void update();
-	void render();
-
 	
-
+	void pellet();
+	
+	void render();
 	
 	//void portal(); //if its out of boundry then tp the opposite side
 };

@@ -5,8 +5,8 @@
 Engine::Engine()
     : window(
         sf::VideoMode{ sf::Vector2u{
-            static_cast<unsigned>(width),
-            static_cast<unsigned>(height)
+            static_cast<unsigned>(window_width),
+            static_cast<unsigned>(window_height)
         } },
         "Pacman by Hidomen", sf::Style::Default
     ), stateManager(window, font), mapID(0)

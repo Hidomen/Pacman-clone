@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "Pause.h"
 
-#include "Globals.h"
+#include "Config.h"
 
 #include "SoundManager.h"
 

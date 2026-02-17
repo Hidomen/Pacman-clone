@@ -21,5 +21,24 @@ void Player::update() {
 	
 }
 
+//only when on grid, and check if its player
+void Player::pellet() {
+
+	sf::Vector2i tilePos = map.posToTile(position);
+	sf::Sprite cell = map.tileVector[tilePos.y * board_cell_width + tilePos.x];
+
+	//pellet eaten
+	if (Pellet == map.checkCellbyPos(position)) {
+		map.pelletEaten(tilePos);
+
+		soundManager.isEating = true;
+		//add up to score
+		score += 10;
+	}
+	else {
+		soundManager.isEating = false;
+	}
+}
+
 void Player::render() {
 }

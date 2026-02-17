@@ -5,8 +5,9 @@
 #include "Player.h"
 
 #include "Ghost.h"
-#include "Globals.h"
+#include "Config.h"
 
+#include "SpriteManager.h"
 
 class Game{
 public:
@@ -29,6 +30,7 @@ public:
 
 	Map map;
 
+	SpriteManager playerSprite;
 	Player player;
 
 	Ghost ghost1, ghost2, ghost3, ghost4;

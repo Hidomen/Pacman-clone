@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Button.h"
-#include "Globals.h"
+#include "Config.h"
 
 
 class MainMenu {
