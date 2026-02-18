@@ -14,7 +14,7 @@ text(font, inputText, textSize)
 
 	//for debugging
 	
-	//hitbox.setFillColor(sf::Color::Transparent);
+	hitbox.setFillColor(sf::Color::Transparent);
 	//hitbox.setOutlineThickness(5.f);
 	//hitbox.setOutlineColor(sf::Color::Green);
 }

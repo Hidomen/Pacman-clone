@@ -16,7 +16,7 @@ SpriteManager::SpriteManager(sf::RenderWindow& window, EntityType entityType) : 
 	case EntityType::Ghost:
 		break;
 	}
-
+	//texture.update(window);
 	sprite.setTexture(texture);
 }
 

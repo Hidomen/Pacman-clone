@@ -31,7 +31,7 @@ constexpr int board_cell_width = 28;
 //
 //====================================
 constexpr int tileSize = 24;
-constexpr float step = tileSize / 3.f;
+constexpr float step = tileSize / 4.f;
 
 //====================================
 //

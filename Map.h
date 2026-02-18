@@ -23,6 +23,8 @@ public:
 	borderList& border;
 	
 	std::vector<sf::Sprite> tileVector; //make it 2D, or 2D reachable
+	std::string loadedMap[board_cell_height];
+
 	int remainingPellet;
 
 	sf::Texture pelletTexture;

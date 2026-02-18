@@ -166,6 +166,10 @@ void Game::update() {
             if(Wall == map.checkCellbyTile( {i % board_cell_width, i / board_cell_width}))
                 map.tileVector[i].setTexture(map.testTexture);
         }
+
+        setupEntities();
+        setupMap();
+
     }
 
     playerSprite.sprite.setPosition(player.position);
@@ -183,9 +187,10 @@ void Game::setupEntities() {
 
     soundManager.statePlay(MenuState::InGame);
 
-    player.position = { tileSize * 16, tileSize * 25 }; //start point
+    player.position = { tileSize * 15.5, tileSize * 25 }; //start point
     player.shape.setPosition(player.position);
-
+    //player.entityDirection = Direction::Left;
+    player.nextDirection = Direction::Left;
 
     ghost1.position = { tileSize * 3, tileSize * 3 }; //start point
     ghost1.shape.setPosition(sf::Vector2f(ghost1.position));
@@ -211,6 +216,7 @@ void Game::gameOver() {
     }
     //otherwise
     setupEntities();
+    
 }
 
 void Game::render() {

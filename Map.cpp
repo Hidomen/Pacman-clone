@@ -1,7 +1,6 @@
 ﻿#include "Map.h"
 #include <iostream>
 
-//std::array <std::string, board_cell_height> map2 = {
 std::string map2[board_cell_height] = {
 	"||||||||||||||||||||||||||||",//1
 	"|............||............|",//2
@@ -101,7 +100,7 @@ sf::Vector2i Map::posToTile(sf::Vector2f position) {
 }
 
 CellType Map::checkCellbyTile(sf::Vector2i tile) {
-	return charToCell(map2[tile.y][tile.x]);
+	return charToCell(loadedMap[tile.y][tile.x]);
 }
 
 
@@ -109,20 +108,17 @@ CellType Map::checkCellbyTile(sf::Vector2i tile) {
 char Map::checkCellbyPos(sf::Vector2f position) {
 	sf::Vector2i tilePos = posToTile(position);
 
-	//std::cout << tilePos.x << " , " << tilePos.y << std::endl;
-
-	//std::cout << map2[static_cast<int>(tilePos.y)][static_cast<int>(tilePos.x)] << " ";
 
 	//outside of x
 	if (tilePos.x > board_cell_width || tilePos.x < 0) {
-		//return 'P';
+		return 'P';
 	}
 	//outside of y
 	else if (tilePos.y > board_cell_height || tilePos.y < 0) {
-		//return 'P';
+		return 'P';
 	}
 
-	return charToCell(map2[tilePos.y][tilePos.x]);
+	return charToCell(loadedMap[tilePos.y][tilePos.x]);
 }
 
 
@@ -135,7 +131,7 @@ void Map::wallTexturer(sf::Vector2i tilePos) {
 	if (tilePos.y - 1 > 0 && tilePos.y + 1 < board_cell_height) {
 		//return;
 		//problem is in this if
-		if (cellToChar(Wall) == map2[tilePos.y - 1][tilePos.x] && cellToChar(Wall) == map2[tilePos.y + 1][tilePos.x]) {
+		if (cellToChar(Wall) == loadedMap[tilePos.y - 1][tilePos.x] && cellToChar(Wall) == loadedMap[tilePos.y + 1][tilePos.x]) {
 			wallTexture.loadFromFile("./Sprites/wall-vertical.png");
 			return;
 
@@ -151,6 +147,9 @@ void Map::wallTexturer(sf::Vector2i tilePos) {
 }
 
 void Map::load() {
+	for (int i = 0; i < board_cell_height; i++) {
+		loadedMap[i] = map2[i];
+	}
 
 	sf::Sprite tile(wallTexture);
 
@@ -158,13 +157,13 @@ void Map::load() {
 		for (int x = 0; x < board_cell_width; x++) { 
 			//tile.setSize({ tile_size,tile_size });
 
-			if (map2[y][x] == cellToChar(Pellet)) {
+			if (loadedMap[y][x] == cellToChar(Pellet)) {
 				//add to another vector
 				tile.setTexture(pelletTexture);
 				remainingPellet++;
 
 			}
-			else if (map2[y][x] == cellToChar(Wall)) {
+			else if (loadedMap[y][x] == cellToChar(Wall)) {
 
 				wallTexturer({y,x});
 				tile.setTexture(wallTexture);	
@@ -194,7 +193,7 @@ void Map::pelletEaten(sf::Vector2i tile) {
 	//change texture
 	tileVector[tile.y * board_cell_width + tile.x].setTexture(emptyTexture); 
 	//then change array element
-	map2[tile.y][tile.x] = ' ';
+	loadedMap[tile.y][tile.x] = ' ';
 	remainingPellet--;
 }
 
