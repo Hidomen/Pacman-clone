@@ -28,7 +28,11 @@ public:
 	int remainingPellet;
 
 	sf::Texture pelletTexture;
-	sf::Texture wallTexture;
+
+	sf::Texture hWallTexture;
+	sf::Texture vWallTexture;
+	sf::Texture cWallTexture;
+	
 	sf::Texture emptyTexture;
 
 	sf::Texture testTexture;
@@ -41,13 +45,13 @@ public:
 	char cellToChar(CellType c);
 
 	void pelletEaten(sf::Vector2i tile);
-	char checkCellbyPos(sf::Vector2f position);
+	CellType checkCellbyPos(sf::Vector2f position);
 	CellType checkCellbyTile(sf::Vector2i tile);
 	sf::Vector2i posToTile(sf::Vector2f position); //referenced by borders
 
 	bool isOnGrid(sf::Vector2f position);
 
-	void wallTexturer(sf::Vector2i tilePos);
+	void wallTexturer(sf::Vector2i tilePos, sf::Sprite& tile);
 	sf::Sprite getVector(sf::Vector2f position);
 
 	void load();

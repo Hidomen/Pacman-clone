@@ -37,11 +37,13 @@ std::string map2[board_cell_height] = {
 
 
 Map::Map(int ID, borderList& border) : border(border),
-pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize,tileSize}, {0,0})),
-  wallTexture	(sf::Vector2u({tileSize,tileSize}),  false),
- emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize,tileSize}, {0,0})),
-  testTexture	("./Sprites/wall.png", false, sf::IntRect({tileSize, tileSize}, {0,0}))
-
+pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  vWallTexture	("./Sprites/wall-vertical.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  hWallTexture  ("./Sprites/wall-horizontal.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  cWallTexture ("./Sprites/wall-corner.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
+ emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  testTexture	("./Sprites/wall.png",   false, sf::IntRect({tileSize, tileSize}, {0,0}))
+	  
 
 {
 	mapID = ID;
@@ -100,58 +102,61 @@ sf::Vector2i Map::posToTile(sf::Vector2f position) {
 }
 
 CellType Map::checkCellbyTile(sf::Vector2i tile) {
+
+	if (tile.x > board_cell_width) return Out;
+	if (tile.x < 0) return Out;
+
+	if (tile.y > board_cell_height) return Out;
+	if (tile.y < 0) return Out;
+
 	return charToCell(loadedMap[tile.y][tile.x]);
 }
 
 
 //controls cell by position with respects of arena
-char Map::checkCellbyPos(sf::Vector2f position) {
+CellType Map::checkCellbyPos(sf::Vector2f position) {
 	sf::Vector2i tilePos = posToTile(position);
 
-
-	//outside of x
-	if (tilePos.x > board_cell_width || tilePos.x < 0) {
-		return 'P';
-	}
-	//outside of y
-	else if (tilePos.y > board_cell_height || tilePos.y < 0) {
-		return 'P';
-	}
-
-	return charToCell(loadedMap[tilePos.y][tilePos.x]);
+	return checkCellbyTile(tilePos);
 }
 
 
 
 //based on neighbors
-void Map::wallTexturer(sf::Vector2i tilePos) {
-	wallTexture.loadFromFile("./Sprites/wall-vertical.png");
-	return;
+void Map::wallTexturer(sf::Vector2i tilePos, sf::Sprite& tile) {
+	//set statements from least condition to more
 
-	if (tilePos.y - 1 > 0 && tilePos.y + 1 < board_cell_height) {
-		//return;
-		//problem is in this if
-		if (cellToChar(Wall) == loadedMap[tilePos.y - 1][tilePos.x] && cellToChar(Wall) == loadedMap[tilePos.y + 1][tilePos.x]) {
-			wallTexture.loadFromFile("./Sprites/wall-vertical.png");
-			return;
+	if (Wall == checkCellbyTile({ tilePos.x, tilePos.y - 1 }) && Wall == checkCellbyTile({ tilePos.x, tilePos.y + 1 })) {
 
-		}
-		return;
 
+		tile.setTexture(vWallTexture);
+	}
+	else if (Wall == checkCellbyTile({ tilePos.x - 1, tilePos.y }) && Wall == checkCellbyTile({ tilePos.x + 1, tilePos.y })) {
+
+		tile.setTexture(hWallTexture);
 	}
 	else {
-		wallTexture.loadFromFile("./Sprites/wall-horizontal.png");
-		return;
+		tile.setTexture(cWallTexture);
 	}
-	return;
+
+	if (Wall == checkCellbyTile({ tilePos.x, tilePos.y + 1 }) &&
+		Wall == checkCellbyTile({ tilePos.x, tilePos.y - 1 }) &&
+		Wall == checkCellbyTile({ tilePos.x + 1, tilePos.y }) &&
+		Wall == checkCellbyTile({ tilePos.x - 1, tilePos.y }))
+	{
+		tile.setTexture(emptyTexture);
+	}
+
 }
 
 void Map::load() {
+	remainingPellet = 0;
+	sf::Sprite tile(emptyTexture);
+
+
 	for (int i = 0; i < board_cell_height; i++) {
 		loadedMap[i] = map2[i];
 	}
-
-	sf::Sprite tile(wallTexture);
 
 	for (int y = 0; y < board_cell_height; y++) { // starting from 0 and controlling by map array
 		for (int x = 0; x < board_cell_width; x++) { 
@@ -165,8 +170,8 @@ void Map::load() {
 			}
 			else if (loadedMap[y][x] == cellToChar(Wall)) {
 
-				wallTexturer({y,x});
-				tile.setTexture(wallTexture);	
+				wallTexturer({x,y}, tile);
+				//tile.setTexture(wallTexture);	
 			} 
 			else {
 				//tile.setFillColor(sf::Color::Transparent); //for now

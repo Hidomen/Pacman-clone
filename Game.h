@@ -44,6 +44,8 @@ public:
 	sf::Text score;
 	sf::Text highScore;
 
+	void updateScore();
+
 	void inputSystem();
 
 	bool checkEntityCollision(Entity entity);

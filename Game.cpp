@@ -35,17 +35,13 @@ score(font), highScore(font)
     score.setCharacterSize(40);
     score.setFillColor(sf::Color::Black);
 
+    player.highScore = 0;
+
     highScore.setCharacterSize(40);
     highScore.setFillColor(sf::Color::Black);
 
-    highScore.setString("HIGHSCORE: 0000");
-
-    highScore.setPosition({ border.right_pos - highScore.getGlobalBounds().size.x, 0 }); //sağa yatık
-    //highScore.setPosition({ score.getGlobalBounds().size.x + 100, 0 }); // sola yatık
-
-
     //map = new Map(1, border);
-
+    drawGrid(window, tileSize);
 }
 
 
@@ -83,6 +79,7 @@ void Game::inputSystem() {
     if (timerTime >= soundManager.startDuration) {
         
         movement();
+        playerSprite.sprite.setPosition(player.position);
 
         delayClock.restart();
     }
@@ -140,9 +137,23 @@ void Game::init() {
     setupEntities();
     setupMap();
 
+
     player.score = 0;
+    //player.highScore = //read from file
+    
+
+    updateScore();
+
 
     std::cout << "Game Initilized :: Took, " << timerClock.getElapsedTime().asSeconds() << "s ." << std::endl;
+}
+
+void Game::updateScore() {
+    player.highScore = player.score;
+
+    highScore.setString("HIGHSCORE: " + std::to_string(player.highScore));
+    highScore.setPosition({ border.right_pos - highScore.getGlobalBounds().size.x, 0 }); //sağa yatık
+    //highScore.setPosition({ score.getGlobalBounds().size.x + 100, 0 }); // sola yatık
 }
 
 void Game::update() {
@@ -157,6 +168,13 @@ void Game::update() {
 
     score.setString("SCORE: " + std::to_string(player.score));
     score.setPosition({ border.left_pos, 0 });
+
+    if (player.score > player.highScore) {
+
+        updateScore();
+    }
+
+
 
 
     if (0 == map.remainingPellet) {
@@ -189,22 +207,22 @@ void Game::setupEntities() {
 
     player.position = { tileSize * 15.5, tileSize * 25 }; //start point
     player.shape.setPosition(player.position);
-    //player.entityDirection = Direction::Left;
+    player.entityDirection = Direction::Left;
     player.nextDirection = Direction::Left;
 
-    ghost1.position = { tileSize * 3, tileSize * 3 }; //start point
+    ghost1.position = { tileSize * 13, tileSize * 16 }; //start point
     ghost1.shape.setPosition(sf::Vector2f(ghost1.position));
     ghost1.targetPosition = ghost1.position;
 
-    ghost2.position = { tileSize * 9, tileSize * 3 };
+    ghost2.position = { tileSize * 14, tileSize * 16 };
     ghost2.shape.setPosition(ghost2.position);
     ghost2.targetPosition = ghost2.position;
 
-    ghost3.position = { tileSize * 7, tileSize * 3 };
+    ghost3.position = { tileSize * 15, tileSize * 16 };
     ghost3.shape.setPosition(ghost3.position);
     ghost3.targetPosition = ghost3.position;
 
-    ghost4.position = { tileSize * 5, tileSize * 3 };
+    ghost4.position = { tileSize * 16, tileSize * 16 };
     ghost4.shape.setPosition(ghost4.position);
     ghost4.targetPosition = ghost4.position;
 
@@ -215,8 +233,7 @@ void Game::gameOver() {
         //ITS OVER
     }
     //otherwise
-    setupEntities();
-    
+    setupEntities(); 
 }
 
 void Game::render() {
@@ -235,11 +252,12 @@ void Game::render() {
 
     window.draw(player.shape);
 
-    //window.draw(gridLines);
     playerSprite.render();
 
     window.draw(score);
     window.draw(highScore);
+
+    window.draw(gridLines);
 
     window.display();
 }

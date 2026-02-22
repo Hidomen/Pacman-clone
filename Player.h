@@ -12,6 +12,7 @@ public:
 
 	//high-score?
 	int score;
+	int highScore;
 
 	int health; //3 for starting
 
