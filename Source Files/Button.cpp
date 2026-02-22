@@ -1,4 +1,4 @@
-#include "Button.h"
+#include "../Header Files/Button.h"
 
 
 Button::Button(sf::RenderWindow& window, sf::Font& font, std::string inputText, sf::Vector2f position, int textSize) : window(window), font(font),

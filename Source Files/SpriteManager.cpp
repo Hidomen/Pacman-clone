@@ -1,4 +1,4 @@
-#include "SpriteManager.h"
+#include "../Header Files/SpriteManager.h"
 
 SpriteManager::SpriteManager(sf::RenderWindow& window, EntityType entityType) : sprite(texture), window(window) {
 	
@@ -7,7 +7,7 @@ SpriteManager::SpriteManager(sf::RenderWindow& window, EntityType entityType) : 
 		 
 	case EntityType::Player:
 
-		if (!texture.loadFromFile("./Sprites/cursor.png")) {
+		if (!texture.loadFromFile("./Assets/Sprites/cursor.png")) {
 			std::cout << "[SpriteManager] - player texture couldn't load" << std::endl;
 			return;
 		}

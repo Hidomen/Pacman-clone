@@ -1,4 +1,4 @@
-#include "SoundManager.h"
+#include "../Header Files/SoundManager.h"
 
 SoundManager::SoundManager() : isEating(false), startDuration(0.f),
 
@@ -6,31 +6,31 @@ SoundManager::SoundManager() : isEating(false), startDuration(0.f),
 	ghostMove(ghostMove), ghostRetreat(ghostRetreat),
 	pacmanMove(pacmanMove), pacmanEat(pacmanEat), pacmanFruit(pacmanFruit), pacmanInvincible(pacmanInvincible)
 {
-	if (!startBuffer.loadFromFile("./Sounds/start.wav")) {
+	if (!startBuffer.loadFromFile("./Assets/Sounds/start.wav")) {
 
 	}
-	if (!menuTheme.openFromFile("./Sounds/main-theme.wav")) {
+	if (!menuTheme.openFromFile("./Assets/Sounds/main-theme.wav")) {
 
 	}
-	if (!intermissionBuffer.loadFromFile("./Sounds/empty.ogg")) {
+	if (!intermissionBuffer.loadFromFile("./Assets/Sounds/empty.ogg")) {
 
 	}
-	if (!ghostMoveBuffer.loadFromFile("./Sounds/empty.ogg")) {
+	if (!ghostMoveBuffer.loadFromFile("./Assets/Sounds/empty.ogg")) {
 
 	}
-	if (!ghostRetreatBuffer.loadFromFile("./Sounds/empty.ogg")) {
+	if (!ghostRetreatBuffer.loadFromFile("./Assets/Sounds/empty.ogg")) {
 
 	}
-	if (!pacmanMoveBuffer.loadFromFile("./Sounds/empty.ogg")) {
+	if (!pacmanMoveBuffer.loadFromFile("./Assets/Sounds/empty.ogg")) {
 
 	}
-	if (!pacmanEatBuffer.loadFromFile("./Sounds/pacman-eat-2.ogg")) {
+	if (!pacmanEatBuffer.loadFromFile("./Assets/Sounds/pacman-eat-2.ogg")) {
 
 	}
-	if (!pacmanFruitBuffer.loadFromFile("./Sounds/empty.ogg")) {
+	if (!pacmanFruitBuffer.loadFromFile("./Assets/Sounds/empty.ogg")) {
 
 	}
-	if (!pacmanInvincibleBuffer.loadFromFile("./Sounds/siren.ogg")) {
+	if (!pacmanInvincibleBuffer.loadFromFile("./Assets/Sounds/siren.ogg")) {
 
 	}
 

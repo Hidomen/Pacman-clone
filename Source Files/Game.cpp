@@ -1,5 +1,5 @@
-﻿#include "Game.h"
-#include "funcs.h"
+﻿#include "../Header Files/Game.h"
+#include "../Header Files/funcs.h"
 
 
 
@@ -149,7 +149,14 @@ void Game::init() {
 }
 
 void Game::updateScore() {
-    player.highScore = player.score;
+
+    if (player.score > player.highScore) {
+        player.highScore = player.score;
+
+    }
+
+    score.setString("SCORE: " + std::to_string(player.score));
+    score.setPosition({ border.left_pos, 0 });
 
     highScore.setString("HIGHSCORE: " + std::to_string(player.highScore));
     highScore.setPosition({ border.right_pos - highScore.getGlobalBounds().size.x, 0 }); //sağa yatık
@@ -166,16 +173,9 @@ void Game::update() {
 	
     inputSystem(); 
 
-    score.setString("SCORE: " + std::to_string(player.score));
-    score.setPosition({ border.left_pos, 0 });
+    updateScore();
 
-    if (player.score > player.highScore) {
-
-        updateScore();
-    }
-
-
-
+    
 
     if (0 == map.remainingPellet) {
         std::cout << "[GAME] : MAP CLEARED" << std::endl;

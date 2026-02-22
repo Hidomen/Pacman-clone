@@ -1,4 +1,4 @@
-#include "Pause.h"
+#include "../Header Files/Pause.h"
 
 Pause::Pause(sf::RenderWindow& window, sf::Font& font) : window(window), font(font),
 options(window, font, "Options", {200.f,200.f}, 100), mainMenu(window, font, "Return to main menu", {400.f,200.f}, 100) {

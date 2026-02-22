@@ -1,4 +1,4 @@
-#include "Test.h"
+#include "../Header Files/Test.h"
 
 Test::Test() : window(
 	sf::VideoMode{ 
@@ -10,7 +10,7 @@ Test::Test() : window(
 	rect.setSize({ 25.f,25.f });
 	rect.setPosition({ 100.f,75.f });
 
-	if (!buffer.loadFromFile("./Sounds/start.wav")) {
+	if (!buffer.loadFromFile("./Assets/Sounds/start.wav")) {
 		std::cout << "PROBLEM" << std::endl;
 	}
 	sound.setBuffer(buffer);

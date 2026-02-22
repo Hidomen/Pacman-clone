@@ -18,6 +18,40 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header Files\Button.h" />
+    <ClInclude Include="Header Files\Config.h" />
+    <ClInclude Include="Header Files\Engine.h" />
+    <ClInclude Include="Header Files\Entity.h" />
+    <ClInclude Include="Header Files\funcs.h" />
+    <ClInclude Include="Header Files\Game.h" />
+    <ClInclude Include="Header Files\Ghost.h" />
+    <ClInclude Include="Header Files\MainMenu.h" />
+    <ClInclude Include="Header Files\Map.h" />
+    <ClInclude Include="Header Files\Pause.h" />
+    <ClInclude Include="Header Files\Player.h" />
+    <ClInclude Include="Header Files\resource.h" />
+    <ClInclude Include="Header Files\SoundManager.h" />
+    <ClInclude Include="Header Files\SpriteManager.h" />
+    <ClInclude Include="Header Files\StateManager.h" />
+    <ClInclude Include="Header Files\Test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source Files\Button.cpp" />
+    <ClCompile Include="Source Files\Engine.cpp" />
+    <ClCompile Include="Source Files\Entity.cpp" />
+    <ClCompile Include="Source Files\Game.cpp" />
+    <ClCompile Include="Source Files\Ghost.cpp" />
+    <ClCompile Include="Source Files\main.cpp" />
+    <ClCompile Include="Source Files\MainMenu.cpp" />
+    <ClCompile Include="Source Files\Map.cpp" />
+    <ClCompile Include="Source Files\Pause.cpp" />
+    <ClCompile Include="Source Files\Player.cpp" />
+    <ClCompile Include="Source Files\SoundManager.cpp" />
+    <ClCompile Include="Source Files\SpriteManager.cpp" />
+    <ClCompile Include="Source Files\StateManager.cpp" />
+    <ClCompile Include="Source Files\Test.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -130,39 +164,6 @@
       <AdditionalLibraryDirectories>C:\Users\HP\Desktop\PROJECTS\CODE\API-SFML\Libraries\SFML-3.0.2\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Ghost.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Pause.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
-    <ClCompile Include="StateManager.cpp" />
-    <ClCompile Include="Test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="funcs.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Ghost.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Pause.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="SpriteManager.h" />
-    <ClInclude Include="StateManager.h" />
-    <ClInclude Include="Test.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

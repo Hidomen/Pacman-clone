@@ -1,9 +1,9 @@
-#include "MainMenu.h"
+#include "../Header Files/MainMenu.h"
 
 MainMenu::MainMenu(sf::RenderWindow& window, MenuState& state, sf::Font& font) : window(window), state(state), font(font),
 
-backgroundTexture("./Sprites/main-screen-BG.jpeg", false, sf::IntRect({1024,1056}, {0,0})),	//dont construct here
-cursorTexture("./Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),		//dont construct here
+backgroundTexture("./Assets/Sprites/main-screen-BG.jpeg", false, sf::IntRect({1024,1056}, {0,0})),	//dont construct here
+cursorTexture("./Assets/Sprites/cursor.png", false, sf::IntRect({0,0}, { 24, 24 })),		//dont construct here
 
 cursor(cursorTexture), background(backgroundTexture),
 

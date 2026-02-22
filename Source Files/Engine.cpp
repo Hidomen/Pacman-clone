@@ -1,4 +1,4 @@
-﻿#include "Engine.h"
+﻿#include "../Header Files/Engine.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -13,7 +13,7 @@ Engine::Engine()
 {
     window.setFramerateLimit(144); //does it have to be limited?
 
-    if (!font.openFromFile("./Fonts/alagard.ttf")) {
+    if (!font.openFromFile("./Assets/Fonts/alagard.ttf")) {
         std::cout << "[ENGINE] : font couldnt loaded" << std::endl;
     }
 }

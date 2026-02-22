@@ -10,7 +10,6 @@
 
 #include "SoundManager.h"
 
-
 class StateManager{
 public:
 	sf::RenderWindow& window;

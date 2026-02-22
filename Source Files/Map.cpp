@@ -1,4 +1,4 @@
-﻿#include "Map.h"
+﻿#include "../Header Files/Map.h"
 #include <iostream>
 
 std::string map2[board_cell_height] = {
@@ -37,12 +37,12 @@ std::string map2[board_cell_height] = {
 
 
 Map::Map(int ID, borderList& border) : border(border),
-pelletTexture	("./Sprites/pellet.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
-  vWallTexture	("./Sprites/wall-vertical.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
-  hWallTexture  ("./Sprites/wall-horizontal.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
-  cWallTexture ("./Sprites/wall-corner.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
- emptyTexture	("./Sprites/empty.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
-  testTexture	("./Sprites/wall.png",   false, sf::IntRect({tileSize, tileSize}, {0,0}))
+pelletTexture	("./Assets/Sprites/pellet.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  vWallTexture	("./Assets/Sprites/wall-vertical.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  hWallTexture  ("./Assets/Sprites/wall-horizontal.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  cWallTexture ("./Assets/Sprites/wall-corner.png", false, sf::IntRect({tileSize, tileSize}, {0,0})),
+ emptyTexture	("./Assets/Sprites/empty.png",  false, sf::IntRect({tileSize, tileSize}, {0,0})),
+  testTexture	("./Assets/Sprites/wall.png",   false, sf::IntRect({tileSize, tileSize}, {0,0}))
 	  
 
 {

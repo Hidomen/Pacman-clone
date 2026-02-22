@@ -1,5 +1,5 @@
-﻿#include "Player.h"
-#include "Map.h"
+﻿#include "../Header Files/Player.h"
+#include "../Header Files/Map.h"
 
 
 //window added for just debug

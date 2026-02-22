@@ -1,4 +1,4 @@
-#include "Ghost.h"
+#include "../Header Files/Ghost.h"
 
 
 Ghost::Ghost(Map& map, SoundManager& soundManager) : Entity(map, soundManager) {
